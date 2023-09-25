@@ -20,9 +20,9 @@ type ArticlesProps = {
 
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
-    { key: "dateSubmitted", label: "Title" },
-    { key: "articleTitle", label: "Authors" },
-    { key: "articleCitation", label: "Source" },
+    { key: "dateSubmitted", label: "Date" },
+    { key: "articleTitle", label: "Title" },
+    { key: "articleCitation", label: "Citation" },
     { key: "summary", label: "Summary" },
   ];
 
@@ -53,14 +53,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     } catch (error) {
       console.error('There was an error submitting the form:', error);
     }
-    console.log(
-      JSON.stringify({
-        articleTitle, 
-        dateSubmitted, 
-        articleCitation,
-        summary
-      })
-    );
   };
 
   return (
