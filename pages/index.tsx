@@ -123,20 +123,32 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
     const { topics } = await getTopics();
     console.log(topics, "Testing String");
 
-    if (!Array.isArray(topics)) {
-      throw new Error("Topics is not an array");
+    let articles;
+
+    if (!Array.isArray(topics) || topics.length === 0) {
+      // Default articles if topics is not an array or is empty
+      articles = [
+        {
+          id: "defaultId",
+          dateSubmitted: "defaultDate",
+          articleTitle: "defaultTitle",
+          articleCitation: "defaultCitation",
+          summary: "defaultSummary",
+        },
+        // Add more default articles as needed
+      ];
+    } else {
+      // Map the data to ensure all articles have consistent property names
+      articles = topics.map((article: { 
+        id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; 
+      }) => ({
+        id: article.id ?? article._id,
+        dateSubmitted: article.dateSubmitted,
+        articleTitle: article.articleTitle,
+        articleCitation: article.articleCitation,
+        summary: article.summary,
+      }));
     }
-
-    // Map the data to ensure all articles have consistent property names
-    const articles = topics.map((article: { 
-      id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; }) => ({
-      id: article.id ?? article._id,
-      dateSubmitted: article.dateSubmitted,
-      articleTitle: article.articleTitle,
-      articleCitation: article.articleCitation,
-      summary: article.summary
-    }));
-
 
     return {
       props: {
