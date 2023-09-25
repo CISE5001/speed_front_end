@@ -139,7 +139,7 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
       ];
     } else {
       // Map the data to ensure all articles have consistent property names
-      articles = topics.map((article: { 
+      articles = topics?.map((article: { 
         id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; 
       }) => ({
         id: article.id ?? article._id,
