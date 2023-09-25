@@ -35,7 +35,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
+      const response = await fetch('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
