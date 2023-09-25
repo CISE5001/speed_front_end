@@ -9,15 +9,15 @@ const SortableTable: React.FC<SortableTableProps> = ({ headers, data }) => (
   <table>
     <thead>
       <tr>
-        {headers.map((header) => (
+        {headers?.map((header) => (
           <th key={header.key}>{header.label}</th>
         ))}
       </tr>
     </thead>
     <tbody>
-      {data.map((row, i) => (
+      {data?.map((row, i) => (
         <tr key={i}>
-          {headers.map((header) => (
+          {headers?.map((header) => (
             <td key={header.key}>{row[header.key]}</td>
           ))}
         </tr>
