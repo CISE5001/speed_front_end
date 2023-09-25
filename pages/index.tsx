@@ -12,6 +12,7 @@ interface ArticlesInterface {
   articleTitle: String,
   articleCitation: String,
   summary: String;
+  status: String;
 }
 
 type ArticlesProps = {
@@ -24,12 +25,14 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     { key: "articleTitle", label: "Title" },
     { key: "articleCitation", label: "Citation" },
     { key: "summary", label: "Summary" },
+    { key: "status", label: "Status" },
   ];
 
   const [articleTitle, setTitle] = useState("");
-  const dateSubmitted = "placeholder";
+  const dateSubmitted = new Date().toISOString();
   const articleCitation = "placeholder";
   const summary = "placeholder";
+  const status = "awaiting approval";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,7 +43,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({dateSubmitted, articleTitle, articleCitation, summary}),
+        body: JSON.stringify({dateSubmitted, articleTitle, articleCitation, summary, status}),
       });
 
       if (response.ok) {
@@ -120,12 +123,13 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   // Map the data to ensure all articles have consistent property names
   const articles = topics.map((article: { 
-    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any;}) => ({
+    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;}) => ({
     id: article.id ?? article._id,
-    dateSubmitted: article.dateSubmitted,
-    articleTitle: article.articleTitle,
-    articleCitation: article.articleCitation,
-    summary: article.summary
+    dateSubmitted: article.dateSubmitted ?? "no date",
+    articleTitle: article.articleTitle ?? "no title",
+    articleCitation: article.articleCitation  ?? "no citation",
+    summary: article.summary ?? "no summary",
+    status: article.status ?? "no status"
   }));
 
 
