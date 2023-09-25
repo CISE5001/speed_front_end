@@ -119,26 +119,40 @@ const getTopics = async() => {
 }
 
 export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) => {
+  try {
+    const { topics } = await getTopics();
+    console.log(topics, "Testing String");
 
-  const { topics } = await getTopics();
-  console.log(topics, "Testing String");
+    if (!Array.isArray(topics)) {
+      throw new Error("Topics is not an array");
+    }
 
-  // Map the data to ensure all articles have consistent property names
-  const articles = topics.map((article: { 
-    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; }) => ({
-    id: article.id ?? article._id,
-    dateSubmitted: article.dateSubmitted,
-    articleTitle: article.articleTitle,
-    articleCitation: article.articleCitation,
-    summary: article.summary
-  }));
+    // Map the data to ensure all articles have consistent property names
+    const articles = topics.map((article: { 
+      id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; }) => ({
+      id: article.id ?? article._id,
+      dateSubmitted: article.dateSubmitted,
+      articleTitle: article.articleTitle,
+      articleCitation: article.articleCitation,
+      summary: article.summary
+    }));
 
 
-  return {
-    props: {
-      articles,
-    },
-  };
+    return {
+      props: {
+        articles,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+    // Return a default prop or an error prop
+    return {
+      props: {
+        articles: [], // default empty array
+        error: "Failed to fetch articles", // an error message or error code
+      },
+    };
+  }
 };
 
 export default Articles; 
