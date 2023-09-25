@@ -125,15 +125,12 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   // Map the data to ensure all articles have consistent property names
   const articles = topics.map((article: { 
-    id: any; _id: any; title: any; authors: any; source: any; pubyear: any; doi: any; claim: any; evidence: any; }) => ({
+    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; }) => ({
     id: article.id ?? article._id,
-    title: article.title,
-    authors: article.authors,
-    source: article.source,
-    pubyear: article.pubyear,
-    doi: article.doi,
-    claim: article.claim,
-    evidence: article.evidence,
+    dateSubmitted: article.dateSubmitted,
+    articleTitle: article.articleTitle,
+    articleCitation: article.articleCitation,
+    summary: article.summary
   }));
 
 
