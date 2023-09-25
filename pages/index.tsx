@@ -119,52 +119,29 @@ const getTopics = async() => {
 }
 
 export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) => {
-  try {
-    const { topics } = await getTopics();
-    console.log(topics, "Testing String");
+  
+  console.log("In GetServerSideProps");
+  const { topics } = await getTopics();
 
-    let articles;
+  console.log("topic count: %d", topics.length);
+  
 
-    if (!Array.isArray(topics) || topics.length === 0) {
-      // Default articles if topics is not an array or is empty
-      articles = [
-        {
-          id: "defaultId",
-          dateSubmitted: "defaultDate",
-          articleTitle: "defaultTitle",
-          articleCitation: "defaultCitation",
-          summary: "defaultSummary",
-        },
-        // Add more default articles as needed
-      ];
-    } else {
-      // Map the data to ensure all articles have consistent property names
-      articles = topics?.map((article: { 
-        id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; 
-      }) => ({
-        id: article.id ?? article._id,
-        dateSubmitted: article.dateSubmitted,
-        articleTitle: article.articleTitle,
-        articleCitation: article.articleCitation,
-        summary: article.summary,
-      }));
-    }
+  // Map the data to ensure all articles have consistent property names
+  const articles = topics.map((article: { 
+    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any;}) => ({
+    id: article.id ?? article._id,
+    dateSubmitted: article.dateSubmitted,
+    articleTitle: article.articleTitle,
+    articleCitation: article.articleCitation,
+    summary: article.summary
+  }));
 
-    return {
-      props: {
-        articles,
-      },
-    };
-  } catch (error) {
-    console.error("Error in getServerSideProps:", error);
-    // Return a default prop or an error prop
-    return {
-      props: {
-        articles: [], // default empty array
-        error: "Failed to fetch articles", // an error message or error code
-      },
-    };
-  }
+
+  return {
+    props: {
+      articles,
+    },
+  };
 };
 
 export default Articles; 
