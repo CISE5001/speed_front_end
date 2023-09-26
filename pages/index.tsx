@@ -23,27 +23,23 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
     { key: "dateSubmitted", label: "Date" },
     { key: "articleTitle", label: "Title" },
-    { key: "articleCitation", label: "Citation" },
-    { key: "summary", label: "Summary" },
     { key: "status", label: "Status" },
   ];
 
   const [articleTitle, setTitle] = useState("");
   const dateSubmitted = new Date().toISOString();
-  const articleCitation = "placeholder";
-  const summary = "placeholder";
-  const status = "awaiting approval";
+  const status = "Awaiting Approval";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
+      const response = await fetch('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({dateSubmitted, articleTitle, articleCitation, summary, status}),
+        body: JSON.stringify({dateSubmitted, articleTitle, status}),
       });
 
       if (response.ok) {
@@ -67,7 +63,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
       <main>
         <h1>Home Page</h1>
-        <Link href="/moderator">
+        <Link href="/moderation">
           <button>Moderator</button>
         </Link>
         <Link href="/analyst">

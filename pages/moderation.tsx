@@ -1,16 +1,12 @@
 import Head from 'next/head'
-import jsonData from 'data.json'
 import styles from '@/pages/index.module.css'
+import axios from 'axios';
 
-export default function Home() {
-
-  function handleEdit(item:any) {
-    console.log("Change status")
-  }
+export default function Home({submittedArticles}: HomeProps) {
 
   const renderArticles = () => {
     
-    return jsonData.submittedArticles.map((item:any, index:any) => (
+    return submittedArticles.map((item:any, index:any) => (
       <tr key={index}>
         <td>{item.dateSubmitted}</td>
         <td>{item.articleTitle}</td>
@@ -18,8 +14,8 @@ export default function Home() {
         <td>
             {item.status == "Awaiting Approval" ? 
             <>
-              <button className='approve' onClick={e => handleEdit(item)}>Approve</button>
-              <button className='reject' onClick={e => handleEdit(item)}>Reject</button>
+              <button className='approve' onClick={e => handleEdit(item._id, 'approveArticle')}>Approve</button>
+              <button className='reject' onClick={e => handleEdit(item._id, 'rejectArticle')}>Reject</button>
             </>:
             <p>No action required</p>
             }
@@ -43,18 +39,72 @@ export default function Home() {
           Table of submitted articles
         </h3>
         <br></br>
-        <div>
-        <tr>
-          <th>Date Submitted</th>
-          <th>Article Title</th>
-          <th>Request Status</th>
-          <th>Actions</th>
-        </tr>
-        <tbody>
+        <table>
+          <thead>
+            <tr>
+              <th>Date Submitted</th>
+              <th>Article Title</th>
+              <th>Request Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
             { renderArticles() }
-         </tbody>
-        </div>
+          </tbody>
+        </table>
       </main>
     </div>
   )
 }
+
+export async function handleEdit(index:any, approveOrReject: String) {
+  try {
+    const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${approveOrReject}/${index}`
+    console.log(url)
+    const response = await axios.put(url);
+
+    if (response.data && response.data.submittedArticles) {
+      console.log("Updated Status")
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
+// Fetch data on server-side
+export async function getServerSideProps() {
+  try {
+    const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles', {
+    })
+
+    if (response.data && response.data.submittedArticles) {
+      return {
+        props: {
+          submittedArticles: response.data.submittedArticles
+        }
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+
+  return {
+    props: {
+      submittedArticles: []
+    }
+  };
+}
+
+type Article = {
+  _id: string;
+  dateSubmitted: string;
+  articleTitle: string;
+  status: string;
+};
+
+type HomeProps = {
+  submittedArticles: Article[];
+};
+
+
+
