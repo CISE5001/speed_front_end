@@ -1,0 +1,22 @@
+{
+    "submittedArticles": [
+      {
+        "dateSubmitted": "21/09/2023",
+        "articleTitle": "A survey of evidence for test-driven development in academia",
+        "status": "Awaiting Approval"
+      },
+      {
+        "dateSubmitted": "17/09/2023",
+        "articleTitle": "Assessing test-driven development at IBM",
+        "status": "Approved"
+      }
+    ],
+    "extractedArticles": [
+      {
+        "dateSubmitted": "17/09/2023",
+        "articleTitle": "Assessing test-driven development at IBM",
+        "articleCitation": "Maximilien, E. M., & William, L. (2003). Assessing test-driven development at IBM, 25th International Conference on Software Engineering, pp. 564-569. doi: 10.1109/ICSE.2003.1201238.",
+        "summary": "An article assessing test-driven development"
+      }
+    ]
+}

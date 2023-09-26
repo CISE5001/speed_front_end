@@ -51,3 +51,80 @@ code {
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
+
+h2 {
+  font-size: 26px;
+  margin: 20px 0;
+  text-align: center;
+  small {
+    font-size: 0.5em;
+  }
+}
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+table {
+  background: #fffee7;
+  border-radius: 0.25em;
+  border-collapse: collapse;
+  margin: 1em;
+}
+th {
+  border-bottom: 1px solid #364043;
+  color: #a0822e;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+td {
+  color: #353535;
+  font-weight: 400;
+  padding: 0.65em 1em;
+}
+.disabled td {
+  color: #4F5F64;
+}
+tbody tr {
+  transition: background 0.25s ease;
+}
+tbody tr:hover {
+  background: #f4e7c1;
+}
+
+button {
+  color: #fff;
+  border:none; 
+  border-radius:5px; 
+  min-height:30px; 
+  min-width: 80px;
+  margin: 1px;
+}
+
+button:hover {
+  transition: 0.7s;
+}
+
+button.approve {
+  background-color:#00ad17;
+}
+button.approve:hover
+{
+  background-color:#2fc243;
+}
+
+button.reject {
+  background-color:#ad0000;
+}
+
+button.reject:hover
+{
+  background-color:#d52c2c;
+}
