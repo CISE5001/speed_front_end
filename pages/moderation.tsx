@@ -14,7 +14,7 @@ export default function Home({submittedArticles}: HomeProps) {
         <td>
             {item.status == "Awaiting Approval" ? 
             <>
-              <button className='approve' onClick={e => handleEdit(item._id, 'approveArticle')}>Approve</button>
+              <button className='approve' onClick={e => {handleEdit(item._id, 'approveArticle'); submitApproved(item.dateSubmitted, item.articleTitle)}}>Approve</button>
               <button className='reject' onClick={e => handleEdit(item._id, 'rejectArticle')}>Reject</button>
             </>:
             <p>No action required</p>
@@ -55,6 +55,28 @@ export default function Home({submittedArticles}: HomeProps) {
       </main>
     </div>
   )
+}
+
+export async function submitApproved(dateSubmitted:any, title: String) {
+  try {
+    console.log("Entered submitApproved")
+    const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles`
+    console.log(url)
+    const postData = {
+      "dateSubmitted": dateSubmitted,
+      "articleTitle": title,
+      "status": "Approved"
+    }
+    console.log(postData)
+
+    const response = await axios.post(url, postData);
+
+    if (response.data && response.data.submittedArticles) {
+      console.log("Article submitted to approvedArticles")
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
 
 export async function handleEdit(index:any, approveOrReject: String) {
