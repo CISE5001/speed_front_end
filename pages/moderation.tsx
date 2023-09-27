@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
 export default function Home({submittedArticles: initialArticles }: HomeProps) {
   const [submittedArticles, setSubmittedArticles] = useState<Article[]>(initialArticles);
 
-  const handleEdit = async (index: any, approveOrReject: string) => {
+  const handleStatusChange = async (index: any, approveOrReject: string) => {
     try {
       const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${approveOrReject}/${index}`
       console.log(url)
       const response = await axios.put(url);
-  
+      
       if (response.data && response.data.submittedArticles) {
         console.log("Updated Status")
         // update local state
@@ -32,8 +32,8 @@ export default function Home({submittedArticles: initialArticles }: HomeProps) {
         <td>
             {item.status == "Awaiting Approval" ? 
             <>
-              <button className='approve' onClick={e => handleEdit(item._id, 'approveArticle')}>Approve</button>
-              <button className='reject' onClick={e => handleEdit(item._id, 'rejectArticle')}>Reject</button>
+              <button className='approve' onClick={e => handleStatusChange(item._id, 'approveArticle')}>Approve</button>
+              <button className='reject' onClick={e => handleStatusChange(item._id, 'rejectArticle')}>Reject</button>
             </>:
             <p>No action required</p>
             }
