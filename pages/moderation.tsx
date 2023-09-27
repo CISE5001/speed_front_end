@@ -10,12 +10,13 @@ export default function Home({submittedArticles: initialArticles }: HomeProps) {
     try {
       const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${approveOrReject}/${index}`
       console.log(url)
-      const response = await axios.put(url);
-      
-      if (response.data && response.data.submittedArticles) {
-        console.log("Updated Status")
-        // update local state
+      await axios.put(url);
+      const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles');
+
+      if(response.data && response.data.submittedArticles) {
+          // update local state
         setSubmittedArticles(response.data.submittedArticles);
+        console.log("Successfully changed status");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -46,8 +47,10 @@ export default function Home({submittedArticles: initialArticles }: HomeProps) {
     const fetchArticles = async () => {
       try {
         const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles');
-        if (response.data && response.data.submittedArticles) {
+        
+        if(response.data && response.data.submittedArticles) {
           setSubmittedArticles(response.data.submittedArticles);
+          console.log("setting articles in useEffect");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
