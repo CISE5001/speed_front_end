@@ -1,12 +1,30 @@
 import Head from 'next/head'
 import styles from '@/pages/index.module.css'
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-export default function Home({submittedArticles}: HomeProps) {
+export default function Home({submittedArticles: initialArticles }: HomeProps) {
+  const [submittedArticles, setSubmittedArticles] = useState<Article[]>(initialArticles);
+
+  const handleEdit = async (index: any, approveOrReject: string) => {
+    try {
+      const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${approveOrReject}/${index}`
+      console.log(url)
+      const response = await axios.put(url);
+  
+      if (response.data && response.data.submittedArticles) {
+        console.log("Updated Status")
+        // update local state
+        setSubmittedArticles(response.data.submittedArticles);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   const renderArticles = () => {
     
-    return submittedArticles.map((item:any, index:any) => (
+    return submittedArticles.map((item: Article, index:number) => (
       <tr key={index}>
         <td>{item.dateSubmitted}</td>
         <td>{item.articleTitle}</td>
@@ -23,6 +41,21 @@ export default function Home({submittedArticles}: HomeProps) {
       </tr>
     ))
   }
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles');
+        if (response.data && response.data.submittedArticles) {
+          setSubmittedArticles(response.data.submittedArticles);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
 
   return (
     <div>
@@ -55,20 +88,6 @@ export default function Home({submittedArticles}: HomeProps) {
       </main>
     </div>
   )
-}
-
-export async function handleEdit(index:any, approveOrReject: String) {
-  try {
-    const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${approveOrReject}/${index}`
-    console.log(url)
-    const response = await axios.put(url);
-
-    if (response.data && response.data.submittedArticles) {
-      console.log("Updated Status")
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
 }
 
 // Fetch data on server-side
