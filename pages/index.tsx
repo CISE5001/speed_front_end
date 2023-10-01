@@ -22,9 +22,10 @@ type ArticlesProps = {
 
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
-    { key: "dateSubmitted", label: "Date" },
     { key: "articleTitle", label: "Title" },
-    { key: "status", label: "Status" },
+    { key: "summary", label: "Summary" },
+    { key: "articleCitation", label: "Citation" },
+    { key: "dateSubmitted", label: "Date" },    
   ];
 
   const [articleTitle, setTitle] = useState("");

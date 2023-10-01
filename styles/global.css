@@ -100,10 +100,10 @@ tbody tr:hover {
 }
 
 button {
-  color: #fff;
-  border:none; 
-  border-radius:5px; 
-  min-height:30px; 
+  color: #000000;
+  border:none;
+  border-radius:5px;
+  min-height:30px;
   min-width: 80px;
   margin: 1px;
 }

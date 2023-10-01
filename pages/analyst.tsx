@@ -1,31 +1,33 @@
 import Head from 'next/head'
 import styles from '@/pages/index.module.css'
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function Home({approvedArticles}: HomeProps) {
+  
+  const router = useRouter();
 
-  function handleEdit(item:any) {
-    console.log("Change status")
+  function handleEdit(id:any) {
+    router.push(`/editArticle/${id}`);
   }
 
   const renderArticles = () => {
     
     return approvedArticles?.map((item:any, index:any) => (
-      <tr key={index}>
-        <td>{item.dateSubmitted}</td>
-        <td>{item.articleTitle}</td>
-        <td>{item.status}</td>
-        <td>
-            {item.status == "Awaiting Approval" ? 
-            <>
-              <button className='approve' onClick={e => handleEdit(item)}>Approve</button>
-              <button className='reject' onClick={e => handleEdit(item)}>Reject</button>
-            </>:
-            <p>No action required</p>
-            }
-        </td>
-      </tr>
-    ))
+        <tr key={index}>
+          <td>{item.dateSubmitted}</td>
+          <td>{item.articleTitle}</td>
+          <td>{item.status}</td>
+          <td>
+              {item.status == "Approved" ? 
+              <>
+                <button className='detail' onClick={e => handleEdit(item._id)}>View Detail</button>
+              </>:
+                <button className='delete' onClick={e => handleEdit(item._id)}>Delete</button>
+              }
+          </td>
+        </tr>
+    ));
   }
 
   return (
@@ -44,15 +46,19 @@ export default function Home({approvedArticles}: HomeProps) {
         </h3>
         <br></br>
         <div>
-        <tr>
-          <th>Date Submitted</th>
-          <th>Article Title</th>
-          <th>Request Status</th>
-          <th>Actions</th>
-        </tr>
-        <tbody>
-            { renderArticles() }
-         </tbody>
+          <table>
+            <thead>
+              <tr>
+                <th>Date Submitted</th>
+                <th>Article Title</th>
+                <th>Request Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+                { renderArticles() }
+            </tbody>
+          </table>
         </div>
       </main>
     </div>
@@ -84,15 +90,16 @@ export async function getServerSideProps() {
 }
 
 type Article = {
+  _id: string;
   dateSubmitted: string;
   articleTitle: string;
   status: string;
-  // ... any other fields from the data.json or the API response
 };
 
 type HomeProps = {
   approvedArticles: Article[];
 };
+
 
 
 
