@@ -24,7 +24,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     { key: "articleTitle", label: "Title" },
     { key: "summary", label: "Summary" },
     { key: "articleCitation", label: "Citation" },
-    { key: "dateSubmitted", label: "Date" },    
+    { key: "dateSubmitted", label: "Date" },
   ];
 
   const [articleTitle, setTitle] = useState("");
@@ -63,7 +63,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       </Head>
 
       <main>
-        <h1>Home Page</h1>
+      <div className="horizontal-color-bar">
+        <h1><center>Home Page</center></h1>
         <Link href="/moderation">
           <button>Moderator</button>
         </Link>
@@ -72,10 +73,10 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         </Link>
         <h2>Submit an Article for Moderation</h2>
         <form id="userSubmit" onSubmit={handleSubmit}>
-          <input 
-          type="text" 
-          name="articleTitle" 
-          placeholder="Enter article title here" 
+          <input
+          type="text"
+          name="articleTitle"
+          placeholder="Enter article title here"
           value={articleTitle}
           onChange={event => setTitle(event.target.value)}
           />
@@ -83,7 +84,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         </form>
         <div>
           <SortableTable headers={headers} data={articles} />
-        </div>
+        </div></div>
       </main>
 
       <footer className={styles.footer}>
@@ -111,15 +112,15 @@ const getTopics = async() => {
 }
 
 export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) => {
-  
+
   console.log("In GetServerSideProps");
   const { topics } = await getTopics();
 
   console.log("topic count: %d", topics.length);
-  
+
 
   // Map the data to ensure all articles have consistent property names
-  const articles = topics.map((article: { 
+  const articles = topics.map((article: {
     id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;}) => ({
     id: article.id ?? article._id,
     dateSubmitted: article.dateSubmitted ?? "no date",
@@ -137,4 +138,4 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
   };
 };
 
-export default Articles; 
+export default Articles;

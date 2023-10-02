@@ -7,6 +7,12 @@
   align-items: center;
 }
 
+.horizontal-color-bar {
+  width: 100%;
+  height: 100x;
+  background-color: #000000;
+}
+
 .title a {
   color: #0070f3;
   text-decoration: none;
