@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import SortableTable from "../pages/components/table/SortableTable";
+import SearchBar from "../pages/components/search/SearchBar";
 import Head from 'next/head';
 import styles from '@/pages/index.module.css';
 import Link from 'next/link';
@@ -28,8 +29,13 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   ];
 
   const [articleTitle, setTitle] = useState("");
+  const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
   const dateSubmitted = new Date().toISOString();
   const status = "Awaiting Approval";
+  
+  const handleSearch = (results: ArticlesInterface[]) => {
+    setSearchResults(results);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,7 +60,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       console.error('There was an error submitting the form:', error);
     }
   };
-
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -83,6 +89,20 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
           <input type="submit" value="Submit" />
         </form>
         <div>
+          <h2>Search for articles by title keywords</h2>
+          <SearchBar onSearch={handleSearch} />
+          <SortableTable headers={headers} data={searchResults} />
+
+          {/*<ul>
+            {searchResults.map((result) => (
+              <li key={result.id}>{result.articleTitle}</li>
+              
+            ))}
+            </ul>*/}
+
+        </div>
+        <div>
+        <h2>All articles</h2>
           <SortableTable headers={headers} data={articles} />
         </div></div>
       </main>
