@@ -12,11 +12,11 @@ body {
 
 body::before {
   content: "";
-  background-color: #000000;
-  height: 30px;
+  background-color: #333;
+  height: 45px;
   width: 100%;
   position: absolute;
-  top: 145px;
+  top: 0px;
   left: 0;
   z-index: 9999;
 }
@@ -33,7 +33,7 @@ main {
 footer {
   width: 100%;
   height: 100px;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #070101;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,12 +67,15 @@ h2 {
   font-size: 26px;
   margin: 20px 0;
   text-align: center;
+
   small {
     font-size: 0.5em;
   }
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -81,40 +84,54 @@ h2 {
 body {
   font-family: 'Open Sans', sans-serif;
 }
+
 table {
   background: #fffee7;
   border-radius: 0.25em;
   border-collapse: collapse;
   margin: 1em;
 }
+
 th {
   border-bottom: 1px solid #364043;
-  color: #a0822e;
+  color: #000000;
   font-size: 0.85em;
   font-weight: 600;
   padding: 0.5em 1em;
   text-align: left;
 }
+
 td {
   color: #353535;
   font-weight: 400;
   padding: 0.65em 1em;
 }
+
 .disabled td {
   color: #4F5F64;
 }
+
 tbody tr {
   transition: background 0.25s ease;
 }
+
 tbody tr:hover {
-  background: #f4e7c1;
+  background: #0025fa41;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Horizontally center the buttons */
+  align-items: center; /* Vertically center the buttons */
+  min-height: 100vh; /* Adjust the height as needed */
 }
 
 button {
-  color: #000000;
-  border:none;
-  border-radius:5px;
-  min-height:30px;
+  background-color: #333;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  min-height: 30px;
   min-width: 80px;
   margin: 1px;
   position: relative;
@@ -126,18 +143,17 @@ button:hover {
 }
 
 button.approve {
-  background-color:#00ad17;
+  background-color: #00ad17;
 }
-button.approve:hover
-{
-  background-color:#2fc243;
+
+button.approve:hover {
+  background-color: #2fc243;
 }
 
 button.reject {
-  background-color:#ad0000;
+  background-color: #ad0000;
 }
 
-button.reject:hover
-{
-  background-color:#d52c2c;
+button.reject:hover {
+  background-color: #d52c2c;
 }
