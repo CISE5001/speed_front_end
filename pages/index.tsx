@@ -1,65 +1,161 @@
-import Head from 'next/head'
-import Image from 'next/image'
+import { GetServerSideProps } from 'next';
+import SortableTable from "../pages/components/table/SortableTable";
+import SearchBar from "../pages/components/search/SearchBar";
+import Head from 'next/head';
+import styles from '@/pages/index.module.css';
+import Link from 'next/link';
+import { NextPage } from 'next';
+import React, { useState } from "react";
 
-import styles from '@/pages/index.module.css'
+interface ArticlesInterface {
+  id: string;
+  dateSubmitted: String,
+  articleTitle: String,
+  articleCitation: String,
+  summary: String;
+  status: String;
+}
 
-export default function Home() {
+type ArticlesProps = {
+  articles: ArticlesInterface[];
+};
+
+const Articles: NextPage<ArticlesProps> = ({ articles }) => {
+  const headers: { key: keyof ArticlesInterface; label: string }[] = [
+    { key: "articleTitle", label: "Title" },
+    { key: "summary", label: "Summary" },
+    { key: "articleCitation", label: "Citation" },
+    { key: "dateSubmitted", label: "Date" },
+  ];
+
+  const [articleTitle, setTitle] = useState("");
+  const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
+  const dateSubmitted = new Date().toISOString();
+  const status = "Awaiting Approval";
+  
+  const handleSearch = (results: ArticlesInterface[]) => {
+    setSearchResults(results);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({dateSubmitted, articleTitle, status}),
+      });
+
+      if (response.ok) {
+        console.log('Submission successful');
+        // Reset the title state if needed
+        setTitle('');
+      } else {
+        console.log('Submission failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('There was an error submitting the form:', error);
+    }
+  };
+  
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App 5</title>
+        <title>Speed application</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <div className="horizontal-color-bar">
+        <h1><center>Home Page</center></h1>
+        <Link href="/moderation">
+          <button>Moderator</button>
+        </Link>
+        <Link href="/analyst">
+          <button>Analyst</button>
+        </Link>
+        <h2>Submit an Article for Moderation</h2>
+        <form id="userSubmit" onSubmit={handleSubmit}>
+          <input
+          type="text"
+          name="articleTitle"
+          placeholder="Enter article title here"
+          value={articleTitle}
+          onChange={event => setTitle(event.target.value)}
+          />
+          <input type="submit" value="Submit" />
+        </form>
+        <div>
+          <h2>Search for articles by title keywords</h2>
+          <SearchBar onSearch={handleSearch} />
+          <SortableTable headers={headers} data={searchResults} />
 
-        <p className={styles.description}>
-          Get started by editing <code>pages/index.js</code>
-        </p>
+          {/*<ul>
+            {searchResults.map((result) => (
+              <li key={result.id}>{result.articleTitle}</li>
+              
+            ))}
+            </ul>*/}
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a href="https://vercel.com/new" className={styles.card}>
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
         </div>
+        <div>
+        <h2>All articles</h2>
+          <SortableTable headers={headers} data={articles} />
+        </div></div>
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
+        {}
       </footer>
     </div>
-  )
+  );
+};
+
+const getTopics = async() => {
+  try {
+      const res = await fetch('http://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
+          cache: 'no-store',
+      });
+
+      if(!res.ok) {
+          throw new Error("Failed to fetch topics")
+      }
+
+      return res.json();
+  }
+  catch (error) {
+      console.log("Error loading topics: ", error);
+  }
 }
+
+export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) => {
+
+  console.log("In GetServerSideProps");
+  const { topics } = await getTopics();
+
+  console.log("topic count: %d", topics.length);
+
+
+  // Map the data to ensure all articles have consistent property names
+  const articles = topics.map((article: {
+    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;}) => ({
+    id: article.id ?? article._id,
+    dateSubmitted: article.dateSubmitted ?? "no date",
+    articleTitle: article.articleTitle ?? "no title",
+    articleCitation: article.articleCitation  ?? "no citation",
+    summary: article.summary ?? "no summary",
+    status: article.status ?? "no status"
+  }));
+
+
+  return {
+    props: {
+      articles,
+    },
+  };
+};
+
+export default Articles;
