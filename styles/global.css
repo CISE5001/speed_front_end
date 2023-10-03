@@ -86,7 +86,7 @@ body {
 }
 
 table {
-  background: #fffee7;
+  background: #ddd;
   border-radius: 0.25em;
   border-collapse: collapse;
   margin: 1em;
@@ -116,7 +116,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: #0025fa41;
+  background: #00000041;
 }
 
 .button-container {
@@ -131,7 +131,7 @@ button {
   color: #ffffff;
   border: none;
   border-radius: 5px;
-  min-height: 30px;
+  min-height: 20px;
   min-width: 80px;
   margin: 1px;
   position: relative;
