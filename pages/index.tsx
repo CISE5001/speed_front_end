@@ -32,7 +32,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
   const dateSubmitted = new Date().toISOString();
   const status = "Awaiting Approval";
-  
+
   const handleSearch = (results: ArticlesInterface[]) => {
     setSearchResults(results);
   };
@@ -60,7 +60,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       console.error('There was an error submitting the form:', error);
     }
   };
-  
+
   return (
     <div className={styles.container}>
       <Head>
@@ -96,7 +96,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
           {/*<ul>
             {searchResults.map((result) => (
               <li key={result.id}>{result.articleTitle}</li>
-              
+
             ))}
             </ul>*/}
 
