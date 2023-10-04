@@ -13,7 +13,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
       const response = await fetch(`https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles`);
       if (response.ok) {
         const data = await response.json();
-        onSearch(data.topics.filter((topic: { articleTitle: string; }) => topic.articleTitle.includes(query))); // Pass the search results to a callback
+        onSearch(data.topics.filter((topic: { articleTitle: string; }) => topic.articleTitle.includes(query)));
       } else {
         console.error('Error searching:', response.statusText);
       }

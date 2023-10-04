@@ -1,17 +1,26 @@
 /**
  * @jest-environment jsdom
  */
-import { render, screen } from '@testing-library/react'
-import Home from '@/pages/index'
+import React from 'react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import Articles from '@/pages/index';
 
-describe('Home', () => {
-  it('renders a heading', () => {
-    render(<Home />)
+describe('Articles Component', () => {
+  it('renders without crashing', () => {
+    render(<Articles articles={[]} />);
+  });
 
-    const heading = screen.getByRole('heading', {
-      name: /welcome to next\.js!/i,
-    })
+  it('submits an article for moderation', async () => {
+    render(<Articles articles={[]} />);
 
-    expect(heading).toBeInTheDocument()
-  })
-})
+    await waitFor(() => {
+      const input = screen.getByPlaceholderText('Enter article title here');
+      // eslint-disable-next-line testing-library/no-wait-for-side-effects
+      fireEvent.change(input, { target: { value: 'Test Article' } });
+
+      const submitButton = screen.getByText('Submit');
+      // eslint-disable-next-line testing-library/no-wait-for-side-effects
+      fireEvent.click(submitButton);
+    });
+  });
+});

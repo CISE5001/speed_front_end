@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '@/pages/index.module.css'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import NavigationBar from './components/navigationbar/NavigationBar';
 
 export default function Home({submittedArticles: initialArticles }: HomeProps) {
   const [submittedArticles, setSubmittedArticles] = useState<Article[]>(initialArticles);
@@ -24,7 +25,6 @@ export default function Home({submittedArticles: initialArticles }: HomeProps) {
   }
 
   const renderArticles = () => {
-    
     return submittedArticles.map((item: Article, index:number) => (
       <tr key={index}>
         <td>{item.dateSubmitted}</td>
@@ -66,7 +66,7 @@ export default function Home({submittedArticles: initialArticles }: HomeProps) {
         <title>MODERATION PAGE</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+      <NavigationBar/>
       <main>
       <h2>
           Welcome to the Moderation Page

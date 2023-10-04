@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '@/pages/index.module.css'
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import NavigationBar from './components/navigationbar/NavigationBar';
 
 export default function Home({approvedArticles}: HomeProps) {
   
@@ -36,7 +37,7 @@ export default function Home({approvedArticles}: HomeProps) {
         <title>ANALYST PAGE</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+      <NavigationBar/>
       <main>
       <h2>
           Welcome to the Analyst Page
