@@ -6,6 +6,7 @@ import styles from '@/pages/index.module.css';
 import Link from 'next/link';
 import { NextPage } from 'next';
 import React, { useState } from "react";
+import Notification from './Notification'; // Adjust the path as needed
 
 interface ArticlesInterface {
   id: string;
@@ -30,6 +31,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
   const [articleTitle, setTitle] = useState("");
   const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
+  const [notification, setNotification] = useState({ message: '', isOpen: false });
   const dateSubmitted = new Date().toISOString();
   const status = "Awaiting Approval";
 
@@ -53,6 +55,9 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         console.log('Submission successful');
         // Reset the title state if needed
         setTitle('');
+
+        // Show the success notification
+        setNotification({ message: 'Submission successful', isOpen: true });
       } else {
         console.log('Submission failed:', response.statusText);
       }
@@ -61,6 +66,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     }
   };
 
+
   return (
     <div className={styles.container}>
       <Head>
@@ -68,6 +74,14 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="horizontal-color-bar">
+
+        {notification.isOpen && (
+          <Notification
+            message={notification.message}
+            onClose={() => setNotification({ message: '', isOpen: false })}
+          />
+        )}
+
 
         <Link href="/">
           <button className={styles.button}>Home</button>
