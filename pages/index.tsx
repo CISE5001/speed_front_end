@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import SearchBar from "../pages/components/search/SearchBar";
 import SortableTable from "../pages/components/table/SortableTable";
 import NavigationBar from './components/navigationbar/NavigationBar';
+import NotificationWindow from './components/notification/NotificationWindow';
 import Head from 'next/head';
 import styles from '@/pages/index.module.css';
 import { NextPage } from 'next';
@@ -31,12 +32,21 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
   const [articleTitle, setTitle] = useState("");
   const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
-  const [notification, setNotification] = useState({ message: '', isOpen: false });
+  const [showNotification, setShowNotification] = useState(false);
   const dateSubmitted = new Date().toISOString();
   const status = "Awaiting Approval";
 
   const handleSearch = (results: ArticlesInterface[]) => {
     setSearchResults(results);
+  };
+
+  const handleShowNotification = () => {
+    setShowNotification(true);
+  
+    // Automatically hide the notification after 5 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -57,7 +67,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         setTitle('');
 
         // Show the success notification
-        setNotification({ message: 'Article submitted', isOpen: true });
+        handleShowNotification();
       } else {
         console.log('Submission failed:', response.statusText);
       }
@@ -65,7 +75,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       console.error('There was an error submitting the form:', error);
     }
   };
-
 
   return (
     <div className={styles.container}>
@@ -75,6 +84,12 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       </Head>
       <NavigationBar/>
       <main>
+      {showNotification && (
+          <NotificationWindow
+            message="Article submitted"
+            type="success"
+          />
+        )}
         <h1><center>Home Page</center></h1>
         <h2>Submit an Article for Moderation</h2>
         <form id="userSubmit" onSubmit={handleSubmit}>

@@ -24,7 +24,7 @@ export default function Home({approvedArticles}: HomeProps) {
               <>
                 <button className='detail' onClick={e => handleEdit(item._id)}>View Detail</button>
               </>:
-                <button className='delete' onClick={e => handleEdit(item._id)}>Delete</button>
+                <button className='delete' onClick={e => handleEdit(item._id)}>Edit</button>
               }
           </td>
         </tr>
