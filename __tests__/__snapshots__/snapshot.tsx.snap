@@ -1,5 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Home /> matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <main>
+      <h2>
+        Welcome to the Moderation Page
+      </h2>
+      <h3
+        class="description"
+      >
+        Table of submitted articles
+      </h3>
+      <br />
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Date Submitted
+            </th>
+            <th>
+              Article Title
+            </th>
+            <th>
+              Request Status
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              2023-09-30
+            </td>
+            <td>
+              Test Article 1
+            </td>
+            <td>
+              Awaiting Approval
+            </td>
+            <td>
+              <button
+                class="approve"
+              >
+                Approve
+              </button>
+              <button
+                class="reject"
+              >
+                Reject
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              2023-09-29
+            </td>
+            <td>
+              Test Article 2
+            </td>
+            <td>
+              Approved
+            </td>
+            <td>
+              <p>
+                No action required
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`renders homepage unchanged 1`] = `
 <div>
   <div
