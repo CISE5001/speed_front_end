@@ -98,14 +98,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
             <h2>Search for articles by title keywords</h2>
             <center><SearchBar onSearch={handleSearch} /></center>
             <SortableTable headers={headers} data={searchResults} />
-
-            {/*<ul>
-            {searchResults.map((result) => (
-              <li key={result.id}>{result.articleTitle}</li>
-
-            ))}
-            </ul>*/}
-
           </div>
           <div>
             <h2>All articles</h2>
