@@ -78,6 +78,9 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         <Link href="/analyst">
           <button className={styles.button}>Analyst</button>
         </Link>
+        <Link href="/admin">
+          <button className={styles.button}>Admin</button>
+        </Link>
       </div>
 
       <main>
