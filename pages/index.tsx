@@ -69,48 +69,52 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       </Head>
       <div className="horizontal-color-bar">
 
-              <Link href="/">
-                <button className={styles.button}>Home</button>
-              </Link>
-              <Link href="/moderation">
-                <button className={styles.button}>Moderator</button>
-              </Link>
-              <Link href="/analyst">
-                <button className={styles.button}>Analyst</button>
-              </Link>
-        </div>
+        <Link href="/">
+          <button className={styles.button}>Home</button>
+        </Link>
+        <Link href="/moderation">
+          <button className={styles.button}>Moderator</button>
+        </Link>
+        <Link href="/analyst">
+          <button className={styles.button}>Analyst</button>
+        </Link>
+      </div>
 
       <main>
-        
-        <h1><center>Home Page</center></h1>
-          <h2>Submit an Article for Moderation</h2>
-          <form id="userSubmit" onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="articleTitle"
-                placeholder="Enter article title here"
-                value={articleTitle}
-                onChange={event => setTitle(event.target.value)}
-              />
-              <input type="submit" value="Submit" />
-          </form>
-          <div>
-            <h2>Search for articles by title keywords</h2>
-            <center><SearchBar onSearch={handleSearch} /></center>
-            <SortableTable headers={headers} data={searchResults} />
 
-            {/*<ul>
+        <h1><center>Home Page</center></h1>
+        <h2>Submit an Article for Moderation</h2>
+        <form id="userSubmit" onSubmit={handleSubmit}>
+          <center>
+            <input
+              type="text"
+              name="articleTitle"
+              placeholder="Enter article title here"
+              value={articleTitle}
+              onChange={event => setTitle(event.target.value)}
+              className="rounded-input"
+            />
+            <button type="submit" className={styles.button}>Submit</button>
+          </center>
+        </form>
+
+        <div>
+          <h2>Search for articles by title keywords</h2>
+          <center><SearchBar onSearch={handleSearch} /></center>
+          <SortableTable headers={headers} data={searchResults} />
+
+          {/*<ul>
             {searchResults.map((result) => (
               <li key={result.id}>{result.articleTitle}</li>
 
             ))}
             </ul>*/}
 
-          </div>
-          <div>
-            <h2>All articles</h2>
-            <SortableTable headers={headers} data={articles} />
-          </div>
+        </div>
+        <div>
+          <h2>All articles</h2>
+          <SortableTable headers={headers} data={articles} />
+        </div>
       </main>
 
       <footer className={styles.footer}>
