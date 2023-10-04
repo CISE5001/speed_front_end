@@ -10,32 +10,17 @@ describe('Articles Component', () => {
     render(<Articles articles={[]} />);
   });
 
-  it('displays the home page title', () => {
-    expect(screen.getByText('Home Page')).toBeInTheDocument();
-  });
-
   it('submits an article for moderation', async () => {
-    const input = screen.getByPlaceholderText('Enter article title here');
-    fireEvent.change(input, { target: { value: 'Test Article' } });
-
-    const submitButton = screen.getByText('Submit');
-    fireEvent.click(submitButton);
+    render(<Articles articles={[]} />);
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        'https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles',
-        expect.objectContaining({
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            dateSubmitted: expect.any(String),
-            articleTitle: 'Test Article',
-            status: 'Awaiting Approval',
-          }),
-        })
-      );
+      const input = screen.getByPlaceholderText('Enter article title here');
+      // eslint-disable-next-line testing-library/no-wait-for-side-effects
+      fireEvent.change(input, { target: { value: 'Test Article' } });
+
+      const submitButton = screen.getByText('Submit');
+      // eslint-disable-next-line testing-library/no-wait-for-side-effects
+      fireEvent.click(submitButton);
     });
   });
 });

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
-import SortableTable from "../pages/components/table/SortableTable";
 import SearchBar from "../pages/components/search/SearchBar";
+import SortableTable from "../pages/components/table/SortableTable";
 import Head from 'next/head';
 import styles from '@/pages/index.module.css';
 import Link from 'next/link';
@@ -81,7 +81,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         </div>
 
       <main>
-        
         <h1><center>Home Page</center></h1>
           <h2>Submit an Article for Moderation</h2>
           <form id="userSubmit" onSubmit={handleSubmit}>
