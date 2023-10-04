@@ -67,25 +67,24 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         <title>Speed application</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="horizontal-color-bar">
+
+              <Link href="/">
+                <button className={styles.button}>Home</button>
+              </Link>
+              <Link href="/moderation">
+                <button className={styles.button}>Moderator</button>
+              </Link>
+              <Link href="/analyst">
+                <button className={styles.button}>Analyst</button>
+              </Link>
+        </div>
 
       <main>
-        <div className="horizontal-color-bar">
-          <h1><center>Home Page</center></h1>
-          <div className={styles.buttonContainer}>
-          <Link href="/home">
-              <button className={styles.button}>Home</button>
-            </Link>
-            <Link href="/moderation">
-              <button className={styles.button}>Moderator</button>
-            </Link>
-            <Link href="/analyst">
-              <button className={styles.button}>Analyst</button>
-            </Link>
-          </div>
-
+        
+        <h1><center>Home Page</center></h1>
           <h2>Submit an Article for Moderation</h2>
           <form id="userSubmit" onSubmit={handleSubmit}>
-            <center>
               <input
                 type="text"
                 name="articleTitle"
@@ -94,7 +93,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
                 onChange={event => setTitle(event.target.value)}
               />
               <input type="submit" value="Submit" />
-            </center>
           </form>
           <div>
             <h2>Search for articles by title keywords</h2>
@@ -112,7 +110,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
           <div>
             <h2>All articles</h2>
             <SortableTable headers={headers} data={articles} />
-          </div></div>
+          </div>
       </main>
 
       <footer className={styles.footer}>
