@@ -1,12 +1,12 @@
 import { GetServerSideProps } from 'next';
 import SearchBar from "../pages/components/search/SearchBar";
 import SortableTable from "../pages/components/table/SortableTable";
+import NavigationBar from './components/navigationbar/NavigationBar';
 import Head from 'next/head';
 import styles from '@/pages/index.module.css';
-import Link from 'next/link';
 import { NextPage } from 'next';
 import React, { useState } from "react";
-import Notification from './Notification'; // Adjust the path as needed
+
 
 interface ArticlesInterface {
   id: string;
@@ -73,30 +73,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         <title>Speed application</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="horizontal-color-bar">
-
-        {notification.isOpen && (
-          <Notification
-            message={notification.message}
-            onClose={() => setNotification({ message: '', isOpen: false })}
-          />
-        )}
-
-
-        <Link href="/">
-          <button className={styles.button}>Home</button>
-        </Link>
-        <Link href="/moderation">
-          <button className={styles.button}>Moderator</button>
-        </Link>
-        <Link href="/analyst">
-          <button className={styles.button}>Analyst</button>
-        </Link>
-        <Link href="/admin">
-          <button className={styles.button}>Admin</button>
-        </Link>
-      </div>
-
+      <NavigationBar/>
       <main>
         <h1><center>Home Page</center></h1>
         <h2>Submit an Article for Moderation</h2>
