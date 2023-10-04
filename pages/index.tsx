@@ -46,7 +46,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({dateSubmitted, articleTitle, status}),
+        body: JSON.stringify({ dateSubmitted, articleTitle, status }),
       });
 
       if (response.ok) {
@@ -67,67 +67,65 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         <title>Speed application</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="horizontal-color-bar">
+
+              <Link href="/">
+                <button className={styles.button}>Home</button>
+              </Link>
+              <Link href="/moderation">
+                <button className={styles.button}>Moderator</button>
+              </Link>
+              <Link href="/analyst">
+                <button className={styles.button}>Analyst</button>
+              </Link>
+        </div>
 
       <main>
-      <div className="horizontal-color-bar">
+        
         <h1><center>Home Page</center></h1>
-        <Link href="/moderation">
-          <button>Moderator</button>
-        </Link>
-        <Link href="/analyst">
-          <button>Analyst</button>
-        </Link>
-        <h2>Submit an Article for Moderation</h2>
-        <form id="userSubmit" onSubmit={handleSubmit}>
-          <input
-          type="text"
-          name="articleTitle"
-          placeholder="Enter article title here"
-          value={articleTitle}
-          onChange={event => setTitle(event.target.value)}
-          />
-          <input type="submit" value="Submit" />
-        </form>
-        <div>
-          <h2>Search for articles by title keywords</h2>
-          <SearchBar onSearch={handleSearch} />
-          <SortableTable headers={headers} data={searchResults} />
-
-          {/*<ul>
-            {searchResults.map((result) => (
-              <li key={result.id}>{result.articleTitle}</li>
-
-            ))}
-            </ul>*/}
-
-        </div>
-        <div>
-        <h2>All articles</h2>
-          <SortableTable headers={headers} data={articles} />
-        </div></div>
+          <h2>Submit an Article for Moderation</h2>
+          <form id="userSubmit" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="articleTitle"
+                placeholder="Enter article title here"
+                value={articleTitle}
+                onChange={event => setTitle(event.target.value)}
+              />
+              <input type="submit" value="Submit" />
+          </form>
+          <div>
+            <h2>Search for articles by title keywords</h2>
+            <center><SearchBar onSearch={handleSearch} /></center>
+            <SortableTable headers={headers} data={searchResults} />
+          </div>
+          <div>
+            <h2>All articles</h2>
+            <SortableTable headers={headers} data={articles} />
+          </div>
       </main>
 
       <footer className={styles.footer}>
-        {}
+        { }
       </footer>
     </div>
   );
 };
 
-const getTopics = async() => {
+const getTopics = async () => {
   try {
-      const res = await fetch('http://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
-          cache: 'no-store',
-      });
+    const res = await fetch('http://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
+      cache: 'no-store',
+    });
 
-      if(!res.ok) {
-          throw new Error("Failed to fetch topics")
-      }
+    if (!res.ok) {
+      throw new Error("Failed to fetch topics")
+    }
 
-      return res.json();
+    return res.json();
   }
   catch (error) {
-      console.log("Error loading topics: ", error);
+    console.log("Error loading topics: ", error);
   }
 }
 
@@ -141,11 +139,12 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   // Map the data to ensure all articles have consistent property names
   const articles = topics.map((article: {
-    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;}) => ({
+    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;
+  }) => ({
     id: article.id ?? article._id,
     dateSubmitted: article.dateSubmitted ?? "no date",
     articleTitle: article.articleTitle ?? "no title",
-    articleCitation: article.articleCitation  ?? "no citation",
+    articleCitation: article.articleCitation ?? "no citation",
     summary: article.summary ?? "no summary",
     status: article.status ?? "no status"
   }));
