@@ -52,7 +52,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       });
 
       if (response.ok) {
-        console.log('Submission successful');
+        console.log('Article submitted');
         // Reset the title state if needed
         setTitle('');
 
