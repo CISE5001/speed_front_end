@@ -57,7 +57,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         setTitle('');
 
         // Show the success notification
-        setNotification({ message: 'Submission successful', isOpen: true });
+        setNotification({ message: 'Article submitted', isOpen: true });
       } else {
         console.log('Submission failed:', response.statusText);
       }
