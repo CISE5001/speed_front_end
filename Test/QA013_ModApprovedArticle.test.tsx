@@ -1,52 +1,56 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import Home from '@/pages/index';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent } from '@testing-library/react';
+import axios from 'axios'; 
+import Moderation from '../pages/moderation';
 
-jest.mock('next/router', () => ({
-    useRouter: () => ({
-      push: jest.fn(),
-    }),
-  }));
-  
-  describe('QA013_ModApprovedArticle Component', () => {
-    it('renders the component with provided data', () => {
-      const mockApprovedArticles = [
-        {
-          _id: '1',
-          dateSubmitted: '2023-10-04',
-          articleTitle: 'Test Article 1',
-          status: 'Approved',
-        },
-      ];
-  
-      render(<Home approvedArticles={mockApprovedArticles} />);
-  
-      expect(screen.getByText('Welcome to the Analyst Page')).toBeInTheDocument();
-      expect(screen.getByText('Table of moderated articles')).toBeInTheDocument();
-      expect(screen.getByText('2023-10-04')).toBeInTheDocument();
-      expect(screen.getByText('Test Article 1')).toBeInTheDocument();
-      expect(screen.getByText('Approved')).toBeInTheDocument();
-    });
-  
-    test('handles button click', async () => {
-      const mockApprovedArticles = [
-        {
-          _id: '1',
-          dateSubmitted: '2023-10-04',
-          articleTitle: 'Test Article 1',
-          status: 'Approved',
-        },
-      ];
-  
-      render(<Home approvedArticles={mockApprovedArticles} />);
+jest.mock('axios');
 
-      await waitFor(() => {
-        expect(screen.getByText('View Detail')).toBeInTheDocument();
-      });
-    
-      const firstDetailButton = screen.getByText('View Detail');
-      expect(firstDetailButton).toBeInTheDocument();
-      userEvent.click(firstDetailButton);
-    });
+const mockArticles = [
+  {
+    _id: '1',
+    dateSubmitted: '2023-10-01',
+    articleTitle: 'Test Article 1',
+    status: 'Awaiting Approval',
+  },
+  {
+    _id: '2',
+    dateSubmitted: '2023-10-02',
+    articleTitle: 'Test Article 2',
+    status: 'Approved',
+  },
+];
+
+describe('QA013_ModApprovedArticle Component', () => {
+  axios.get.mockResolvedValueOnce({ data: { submittedArticles: mockArticles } });
+
+  it('renders the component', async () => {
+    render(<Moderation submittedArticles={[]} />);
+    const pageTitle = screen.getByText('MODERATOR PAGE');
+    expect(pageTitle).toBeInTheDocument();
   });
+
+  it('displays articles fetched from the server', async () => {
+    render(<Moderation submittedArticles={mockArticles} />);
+    const articleTitles = mockArticles.map((article) => screen.getByText(article.articleTitle));
+    articleTitles.forEach((title) => expect(title).toBeInTheDocument());
+  });
+  
+
+  it('handles button click', async () => {
+    const initialArticles = [
+      {
+        _id: '1',
+        dateSubmitted: '2023-10-01',
+        articleTitle: 'Test Article 1',
+        status: 'Awaiting Approval',
+      },
+    ];
+  
+    render(<Moderation submittedArticles={initialArticles} />);
+  
+    const approveButton = screen.getByText('Approve');
+    expect(approveButton).toBeInTheDocument();
+    fireEvent.click(approveButton);
+  });
+  
+});
