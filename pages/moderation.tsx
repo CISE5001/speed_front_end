@@ -1,55 +1,75 @@
-import Head from 'next/head'
-import styles from '@/pages/index.module.css'
+import Head from 'next/head';
+import styles from '@/pages/index.module.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import NavigationBar from './components/navigationbar/NavigationBar';
 
-export default function Home({submittedArticles: initialArticles }: HomeProps) {
+export default function Moderation({ submittedArticles: initialArticles }: HomeProps) {
   const [submittedArticles, setSubmittedArticles] = useState<Article[]>(initialArticles);
 
   const handleStatusChange = async (index: any, approveOrReject: string) => {
     try {
-      const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${approveOrReject}/${index}`
-      console.log(url)
+      const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${approveOrReject}/${index}`;
+      console.log(url);
       await axios.put(url);
       const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles');
 
-      if(response.data && response.data.submittedArticles) {
-          // update local state
+      if (response.data && response.data.submittedArticles) {
         setSubmittedArticles(response.data.submittedArticles);
         console.log("Successfully changed status");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }
+  };
 
   const renderArticles = () => {
-    return submittedArticles.map((item: Article, index:number) => (
+    return submittedArticles.map((item: Article, index: number) => (
       <tr key={index}>
         <td>{item.dateSubmitted}</td>
         <td>{item.articleTitle}</td>
         <td>{item.status}</td>
         <td>
-            {item.status == "Awaiting Approval" ? 
+          {item.status === "Awaiting Approval" ? (
             <>
-              <button className='approve' onClick={e => {handleStatusChange(item._id, 'approveArticle'); submitApproved(item.dateSubmitted, item.articleTitle)}}>Approve</button>
-              <button className='reject' onClick={e => handleStatusChange(item._id, 'rejectArticle')}>Reject</button>
-            </>:
+              <button
+                className={`selectable-button ${item.selected === 'approve' ? 'selected' : ''}`}
+                onClick={() => {
+                  handleStatusChange(item._id, 'approveArticle');
+                  submitApproved(item.dateSubmitted, item.articleTitle, 'approve');
+                }}
+              >
+                Approve
+              </button>
+              <button
+                className={`selectable-button ${item.selected === 'reject' ? 'selected' : ''}`}
+                onClick={() => {
+                  handleStatusChange(item._id, 'rejectArticle');
+                  submitApproved(item.dateSubmitted, item.articleTitle, 'reject');
+                }}
+              >
+                Reject
+              </button>
+            </>
+          ) : (
             <p>No action required</p>
-            }
+          )}
         </td>
       </tr>
-    ))
-  }
+    ));
+  };
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles');
-        
-        if(response.data && response.data.submittedArticles) {
-          setSubmittedArticles(response.data.submittedArticles);
+
+        if (response.data && response.data.submittedArticles) {
+          const articlesWithSelected = response.data.submittedArticles.map((article: Article) => ({
+            ...article,
+            selected: '',
+          }));
+          setSubmittedArticles(articlesWithSelected);
           console.log("setting articles in useEffect");
         }
       } catch (error) {
@@ -67,16 +87,14 @@ export default function Home({submittedArticles: initialArticles }: HomeProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <NavigationBar/>
+      <NavigationBar />
 
       <main className="flex-1 p-6">
-        <h2 className="text-3xl font-bold mb-4 ">
-          Welcome to the Moderation Page
+        <h2 className="text-3xl font-bold mb-4 text-center flex justify-center items-center h-full italic">
+          MODERATOR PAGE
         </h2>
-        
-        <h3 className="text-xl mb-6">
-          Table of submitted articles
-        </h3>
+
+        <h3 className="text-xl mb-6">Table of submitted articles</h3>
 
         <div className="bg-white shadow-md rounded">
           <table className="min-w-full divide-y divide-gray-200">
@@ -96,50 +114,46 @@ export default function Home({submittedArticles: initialArticles }: HomeProps) {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-                { renderArticles() }
-            </tbody>
+            <tbody className="bg-white divide-y divide-gray-200">{renderArticles()}</tbody>
           </table>
         </div>
       </main>
     </div>
-);
-
+  );
 }
 
-export async function submitApproved(dateSubmitted:any, title: String) {
+export async function submitApproved(dateSubmitted: any, title: string, action: string) {
   try {
-    console.log("Entered submitApproved")
-    const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles`
-    console.log(url)
+    console.log("Entered submitApproved");
+    const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles`;
+    console.log(url);
     const postData = {
-      "dateSubmitted": dateSubmitted,
-      "articleTitle": title,
-      "status": "Approved"
-    }
-    console.log(postData)
+      dateSubmitted,
+      articleTitle: title,
+      status: action === 'approve' ? 'Approved' : 'Rejected',
+    };
+    console.log(postData);
 
     const response = await axios.post(url, postData);
 
     if (response.data && response.data.submittedArticles) {
-      console.log("Article submitted to approvedArticles")
+      console.log("Article submitted to approvedArticles");
     }
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 
-// Fetch data on server-side
 export async function getServerSideProps() {
   try {
     const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles', {
-    })
+    });
 
     if (response.data && response.data.submittedArticles) {
       return {
         props: {
-          submittedArticles: response.data.submittedArticles
-        }
+          submittedArticles: response.data.submittedArticles,
+        },
       };
     }
   } catch (error) {
@@ -148,8 +162,8 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      submittedArticles: []
-    }
+      submittedArticles: [],
+    },
   };
 }
 
@@ -158,11 +172,9 @@ type Article = {
   dateSubmitted: string;
   articleTitle: string;
   status: string;
+  selected?: string;
 };
 
 type HomeProps = {
   submittedArticles: Article[];
 };
-
-
-

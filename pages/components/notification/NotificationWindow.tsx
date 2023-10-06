@@ -5,11 +5,37 @@ interface NotificationWindowProps {
   type: 'success' | 'error' | 'info';
 }
 
+// Notification popup window design
 const NotificationWindow: React.FC<NotificationWindowProps> = ({ message, type }) => {
   const [isVisible, setIsVisible] = useState(true);
 
+  const notificationBoxStyles: React.CSSProperties = {
+    backgroundColor: type === 'success' ? '#fc053f' : type === 'error' ? 'red' : 'blue', 
+    color: 'white',
+    padding: '10px',
+    textAlign: 'center',
+    position: 'fixed',
+    top: '10px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: '9999',
+    borderRadius: '5px',
+  };
+  
+
+  useEffect(() => {
+    // Automatically hide the notification after 5 seconds
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 10000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   return isVisible ? (
-    <div className={`notification-box ${type}`}>
+    <div style={notificationBoxStyles}>
       {message}
     </div>
   ) : null;

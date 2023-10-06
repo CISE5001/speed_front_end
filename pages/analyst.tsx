@@ -41,8 +41,8 @@ export default function Home({approvedArticles}: HomeProps) {
       <NavigationBar/>
 
       <main className="flex-1 p-6">
-        <h2 className="text-3xl font-bold mb-4">
-          Welcome to the Analyst Page
+        <h2 className="text-3xl font-bold mb-4 text-center flex justify-center items-center h-full italic">
+          ANALYST PAGE
         </h2>
         
         <h3 className="text-xl mb-6">

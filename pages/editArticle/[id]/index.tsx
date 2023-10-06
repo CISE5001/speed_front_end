@@ -59,13 +59,13 @@ export default function Home({submittedArticles}: HomeProps) {
           <div>
             <p className="mb-2 font-semibold">Title</p>
             <input 
-              type="text"
-              name="articleTitle"
-              placeholder="Enter article title here"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
+                type="text"
+                name="articleTitle"
+                placeholder="Enter article title here"
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded block" // Add the "block" class
+              />
           </div>
 
           <div>
