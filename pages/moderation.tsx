@@ -70,7 +70,7 @@ export default function Home({submittedArticles: initialArticles }: HomeProps) {
       <NavigationBar/>
 
       <main className="flex-1 p-6">
-        <h2 className="text-3xl font-bold mb-4">
+        <h2 className="text-3xl font-bold mb-4 ">
           Welcome to the Moderation Page
         </h2>
         

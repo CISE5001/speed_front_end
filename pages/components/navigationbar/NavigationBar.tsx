@@ -1,21 +1,41 @@
 import React from "react";
-import Link from 'next/link';
+import Link from "next/link";
+import Image from "next/image";
 
 const NavigationBar = () => (
-    <div className="bg-gray-200 p-4 flex justify-between items-center">
+  <div className="bg-transparent p-4 flex items-center justify-between">
+    <div className = "mr-4">
+      <Image
+        src="/speedlogo.png"
+        alt="Speed Logo"
+        width={200}
+        height={20}
+        
+      />
+    </div>
 
-    <Link href="/">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">Home</button>
-    </Link>
-    <Link href="/moderation">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">Moderator</button>
-    </Link>
-    <Link href="/analyst">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">Analyst</button>
-    </Link>
-    <Link href="/admin">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">Admin</button>
-    </Link>
+    <div className="space-x-4">
+      <Link href="/">
+        <button className="px-4 py-2 bg-transparent text-blue-600 hover:text-blue-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 font-bold italic">
+          HOME
+        </button>
+      </Link>
+      <Link href="/moderation">
+        <button className="px-4 py-2 bg-transparent text-blue-600 hover:text-blue-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 font-bold  italic">
+          MODERATOR
+        </button>
+      </Link>
+      <Link href="/analyst">
+        <button className="px-4 py-2 bg-transparent text-blue-600 hover:text-blue-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 font-bold  italic">
+          ANALYST
+        </button>
+      </Link>
+      <Link href="/admin">
+        <button className="px-4 py-2 bg-transparent text-blue-600 hover:text-blue-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 font-bold  italic">
+          ADMIN
+        </button>
+      </Link>
+    </div>
   </div>
 );
 

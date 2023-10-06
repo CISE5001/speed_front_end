@@ -76,6 +76,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     }
   };
 
+  const isSubmitDisabled = articleTitle.trim() === ""; // Disable if title is empty or only contains spaces
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Head>
@@ -107,7 +109,13 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
               onChange={event => setTitle(event.target.value)}
               className="border border-gray-300 p-2 rounded w-2/3 mb-4"
             />
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 ml-4 rounded hover:bg-blue-600">Submit</button>
+            <button
+              type="submit"
+              className={`bg-blue-500 text-white px-10 py-2 ml-4 rounded hover:bg-blue-800 font-bold ${isSubmitDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
+              disabled={isSubmitDisabled}
+            >
+              Submit
+            </button>
           </div>
         </form>
 
@@ -156,7 +164,6 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   console.log("topic count: %d", topics.length);
 
-
   // Map the data to ensure all articles have consistent property names
   const articles = topics.map((article: {
     id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;
@@ -168,7 +175,6 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
     summary: article.summary ?? "no summary",
     status: article.status ?? "no status"
   }));
-
 
   return {
     props: {
