@@ -32,38 +32,49 @@ export default function Home({approvedArticles}: HomeProps) {
   }
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <Head>
         <title>ANALYST PAGE</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <NavigationBar/>
-      <main>
-      <h2>
+
+      <main className="flex-1 p-6">
+        <h2 className="text-3xl font-bold mb-4">
           Welcome to the Analyst Page
         </h2>
-        <h3 className={styles.description}>
+        
+        <h3 className="text-xl mb-6">
           Table of moderated articles
         </h3>
-        <br></br>
-        <div>
-          <table>
-            <thead>
+
+        <div className="bg-white shadow-md rounded">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
               <tr>
-                <th>Date Submitted</th>
-                <th>Article Title</th>
-                <th>Request Status</th>
-                <th>Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Date Submitted
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Article Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Request Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-gray-200">
                 { renderArticles() }
             </tbody>
           </table>
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 // Fetch data on server-side

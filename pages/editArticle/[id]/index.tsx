@@ -1,5 +1,7 @@
 import axios from "axios"
 import React, { useState } from 'react';
+import NavigationBar from '../../components/navigationbar/NavigationBar';
+import Head from 'next/head'
 
 export default function Home({submittedArticles}: HomeProps) {
 
@@ -42,38 +44,66 @@ export default function Home({submittedArticles}: HomeProps) {
   }
 
   return (
-    <div>
-      <h1>Edit Article</h1>
-      <p>Title</p>
-        <form id="userSubmit" onSubmit={handleSubmit}>
-          <input 
-            type="text" 
-            name="articleTitle" 
-            placeholder="Enter article title here"
-            value={title}  // Auto-populate the input field with the title value
-            onChange={e => setTitle(e.target.value)}  
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Head>
+        <title>MODERATION PAGE</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <NavigationBar/>
+
+      <main className="flex-1 p-6">
+        <h1 className="text-4xl font-bold mb-10 w-full">Edit Article</h1>
+        
+        <form id="userSubmit" onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
+          <div>
+            <p className="mb-2 font-semibold">Title</p>
+            <input 
+              type="text"
+              name="articleTitle"
+              placeholder="Enter article title here"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
             />
-          <p>Summary</p>
-          <input 
-            type="text" 
-            name="articleTitle" 
-            placeholder="Enter article summary here"
-            value={summary}
-            onChange={e => setSummary(e.target.value)} 
+          </div>
+
+          <div>
+            <p className="mb-2 font-semibold">Summary</p>
+            <input 
+              type="text"
+              name="articleSummary"
+              placeholder="Enter article summary here"
+              value={summary}
+              onChange={e => setSummary(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
             />
-          <p>Citation</p>  
-          <input 
-            type="text" 
-            name="articleTitle" 
-            placeholder="Enter article citation here"
-            value={citation}
-            onChange={e => setCitation(e.target.value)}
+          </div>
+
+          <div>
+            <p className="mb-2 font-semibold">Citation</p>
+            <input 
+              type="text"
+              name="articleCitation"
+              placeholder="Enter article citation here"
+              value={citation}
+              onChange={e => setCitation(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
             />
-            <p><br /></p>
-          <input type="submit" value="Submit" />
+          </div>
+
+          <div className="mt-6">
+            <input 
+              type="submit"
+              value="Submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600"
+            />
+          </div>
         </form>
+      </main>      
     </div>
-  )
+);
+
 }
 
 export async function getServerSideProps(context: any) {

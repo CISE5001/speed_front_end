@@ -27,14 +27,17 @@ function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <div>
+    <div className="flex border border-gray-300 rounded p-2">
       <input
         type="text"
         placeholder="Search..."
         value={query}
         onChange={handleInputChange}
+        className="flex-grow px-2 py-1 rounded-l focus:outline-none focus:border-blue-400"
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-1 rounded-r hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        Search
+      </button>
     </div>
   );
 }
