@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import styles from '@/pages/index.module.css'
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import NavigationBar from './components/navigationbar/NavigationBar';
@@ -16,8 +15,12 @@ export default function Home({approvedArticles}: HomeProps) {
     
     return approvedArticles?.map((item:any, index:any) => (
         <tr key={index}>
-          <td>{item.dateSubmitted}</td>
-          <td>{item.articleTitle}</td>
+        <td>{item.dateSubmitted}</td>
+        <td>{item.articleTitle}</td>
+        <td>{item.articlePractice}</td>
+        <td>{item.articleClaim}</td>
+        <td>{item.articleEvidence}</td>
+        <td>{item.articleCitation}</td>
           <td>{item.status}</td>
           <td>
               {item.status == "Approved" ? 
@@ -58,6 +61,18 @@ export default function Home({approvedArticles}: HomeProps) {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Article Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Practice
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Claim
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Evidence
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Citation
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Request Status
@@ -105,7 +120,12 @@ type Article = {
   _id: string;
   dateSubmitted: string;
   articleTitle: string;
+  articlePractice: string,
+  articleClaim: string,
+  articleEvidence: string,
+  articleCitation: string,
   status: string;
+  selected?: string;
 };
 
 type HomeProps = {

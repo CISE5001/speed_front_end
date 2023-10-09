@@ -4,7 +4,7 @@ import SortableTable from "../pages/components/table/SortableTable";
 import NavigationBar from './components/navigationbar/NavigationBar';
 import NotificationWindow from './components/notification/NotificationWindow';
 import Head from 'next/head';
-import styles from '@/pages/index.module.css';
+import { useRouter } from 'next/router'
 import { NextPage } from 'next';
 import React, { useState } from "react";
 
@@ -13,9 +13,10 @@ interface ArticlesInterface {
   id: string;
   dateSubmitted: String,
   articleTitle: String,
+  articlePractice: String,
+  articleClaim: String,
+  articleEvidence: String,
   articleCitation: String,
-  summary: String;
-  status: String;
 }
 
 type ArticlesProps = {
@@ -25,7 +26,9 @@ type ArticlesProps = {
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
     { key: "articleTitle", label: "Title" },
-    { key: "summary", label: "Summary" },
+    { key: "articlePractice", label: "Practice" },
+    { key: "articleClaim", label: "Claim" },
+    { key: "articleEvidence", label: "Evidence" },
     { key: "articleCitation", label: "Citation" },
     { key: "dateSubmitted", label: "Date" },
   ];
@@ -39,6 +42,12 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const handleSearch = (results: ArticlesInterface[]) => {
     setSearchResults(results);
   };
+
+  const router = useRouter();
+
+  function submitPage() {
+    router.push(`/submit`);
+  }
 
   const handleShowNotification = () => {
     setShowNotification(true);
@@ -97,19 +106,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
         <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
         
-        <form id="userSubmit" onSubmit={handleSubmit} className="mb-6">
-          <div className="flex justify-center">
-            <input
-              type="text"
-              name="articleTitle"
-              placeholder="Enter article title here"
-              value={articleTitle}
-              onChange={event => setTitle(event.target.value)}
-              className="border border-gray-300 p-2 rounded w-2/3 mb-4"
-            />
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 ml-4 rounded hover:bg-blue-600">Submit</button>
-          </div>
-        </form>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={e => submitPage()}>Submit Article</button>
 
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">Search for articles by title keywords</h2>
@@ -159,14 +156,23 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   // Map the data to ensure all articles have consistent property names
   const articles = topics.map((article: {
-    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;
+    id: any; _id: any; 
+    dateSubmitted: any; 
+    articleTitle: any; 
+    articlePractice: any; 
+    articleClaim: any; 
+    articleEvidence: any; 
+    articleCitation: any; 
+    summary: any; 
+    status: any;
   }) => ({
     id: article.id ?? article._id,
     dateSubmitted: article.dateSubmitted ?? "no date",
     articleTitle: article.articleTitle ?? "no title",
+    articlePractice: article.articlePractice ?? "no practice",
+    articleClaim: article.articleClaim ?? "no claim",
+    articleEvidence: article.articleEvidence ?? "no evidence",
     articleCitation: article.articleCitation ?? "no citation",
-    summary: article.summary ?? "no summary",
-    status: article.status ?? "no status"
   }));
 
 

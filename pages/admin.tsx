@@ -9,12 +9,14 @@ import { NextPage } from 'next';
 import React, { useState } from "react";
 
 interface ArticlesInterface {
-  id: string;
-  dateSubmitted: String,
-  articleTitle: String,
-  articleCitation: String,
-  summary: String;
-  status: String;
+  _id: string;
+  dateSubmitted: string;
+  articleTitle: string;
+  articlePractice: string,
+  articleClaim: string,
+  articleEvidence: string,
+  articleCitation: string,
+  status: string;
 }
 
 type ArticlesProps = {
@@ -24,16 +26,15 @@ type ArticlesProps = {
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
     { key: "articleTitle", label: "Title" },
-    { key: "summary", label: "Summary" },
+    { key: "articlePractice", label: "Practice" },
+    { key: "articleClaim", label: "Claim" },
+    { key: "articleEvidence", label: "Evidence" },
     { key: "articleCitation", label: "Citation" },
     { key: "dateSubmitted", label: "Date" },
   ];
 
-  const [articleTitle, setTitle] = useState("");
   const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const dateSubmitted = new Date().toISOString();
-  const status = "Awaiting Approval";
 
   const handleSearch = (results: ArticlesInterface[]) => {
     setSearchResults(results);
@@ -96,14 +97,23 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
   const { topics } = await getTopics();
 
   const articles = topics.map((article: {
-    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;
+    id: any; _id: any; 
+    dateSubmitted: any; 
+    articleTitle: any; 
+    articlePractice: any; 
+    articleClaim: any; 
+    articleEvidence: any; 
+    articleCitation: any; 
+    summary: any; 
+    status: any;
   }) => ({
     id: article.id ?? article._id,
     dateSubmitted: article.dateSubmitted ?? "no date",
     articleTitle: article.articleTitle ?? "no title",
+    articlePractice: article.articlePractice ?? "no practice",
+    articleClaim: article.articleClaim ?? "no claim",
+    articleEvidence: article.articleEvidence ?? "no evidence",
     articleCitation: article.articleCitation ?? "no citation",
-    summary: article.summary ?? "no summary",
-    status: article.status ?? "no status"
   }));
 
   return {
