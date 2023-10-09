@@ -7,6 +7,29 @@ import NavigationBar from './components/navigationbar/NavigationBar';
 export default function Moderation({ submittedArticles: initialArticles }: HomeProps) {
   const [submittedArticles, setSubmittedArticles] = useState<Article[]>(initialArticles);
 
+// Handle delete function
+const handleDelete = async (articleId: any) => {
+  // Prompt the user for confirmation
+  const userConfirmed = window.confirm("Are you sure you want to delete this article?");
+
+  // If the user cancels, abort the deletion
+  if (!userConfirmed) return;
+
+  try {
+    const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${articleId}`;
+    console.log(url);
+    await axios.delete(url);
+    const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles');
+
+    if (response.data && response.data.submittedArticles) {
+      setSubmittedArticles(response.data.submittedArticles);
+      console.log("Successfully changed status");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
   const handleStatusChange = async (index: any, approveOrReject: string) => {
     try {
       const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles/${approveOrReject}/${index}`;
@@ -54,6 +77,13 @@ export default function Moderation({ submittedArticles: initialArticles }: HomeP
           ) : (
             <p>No action required</p>
           )}
+        </td>
+        <td>
+          <button 
+            onClick={() => handleDelete(item._id)} 
+            className="text-red-600 hover:text-red-800">
+            Delete
+          </button>  
         </td>
       </tr>
     ));

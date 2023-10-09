@@ -8,6 +8,7 @@ import styles from '@/pages/index.module.css';
 import { NextPage } from 'next';
 import React, { useState } from "react";
 
+
 interface ArticlesInterface {
   id: string;
   dateSubmitted: String,
@@ -61,8 +62,11 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       });
 
       if (response.ok) {
-        console.log('Article has been submitted');
+        console.log('Article submitted');
+        // Reset the title state if needed
         setTitle('');
+
+        // Show the success notification
         handleShowNotification();
       } else {
         console.log('Submission failed:', response.statusText);
@@ -71,8 +75,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       console.error('There was an error submitting the form:', error);
     }
   };
-
-  const isSubmitDisabled = articleTitle.trim() === "";
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -91,33 +93,27 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
           />
         )}
 
-        <h1 className="text-4xl font-bold text-center mb-6 italic">HOME PAGE</h1>
+        <h1 className="text-3xl font-bold text-center mb-6">Home Page</h1>
 
-        <h2 className="text-2xl font-semibold mb-7 mt-10">SUBMIT AN ARTICLE FOR MODERATION</h2>
+        <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
         
         <form id="userSubmit" onSubmit={handleSubmit} className="mb-6">
-          <div className="flex justify-start">
+          <div className="flex justify-center">
             <input
               type="text"
               name="articleTitle"
               placeholder="Enter article title here"
               value={articleTitle}
               onChange={event => setTitle(event.target.value)}
-              className="border border-gray-200 p-1 rounded w-1/3 mb-0 mt-0"
+              className="border border-gray-300 p-2 rounded w-2/3 mb-4"
             />
-            <button
-              type="submit"
-              className={`bg-blue-500 text-white px-7 py-2 ml-2 rounded hover:bg-blue-800 font-bold ${isSubmitDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
-              disabled={isSubmitDisabled}
-            >
-              Submit
-            </button>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 ml-4 rounded hover:bg-blue-600">Submit</button>
           </div>
         </form>
 
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold mb-4">SEARCH FOR ARTICLES BY TITLE KEYWORDS</h2>
-          <div className="flex justify-end mb-4"> {}
+          <h2 className="text-2xl font-semibold mb-4">Search for articles by title keywords</h2>
+          <div className="flex justify-center mb-4">
             <SearchBar onSearch={handleSearch} />
           </div>
           <SortableTable headers={headers} data={searchResults} />
@@ -130,7 +126,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       </main>
 
       <footer className="p-4 bg-gray-800 text-white">
-        {}
+        {/* Content for the footer goes here */}
       </footer>
     </div>
   );
@@ -159,6 +155,9 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
   const { topics } = await getTopics();
 
   console.log("topic count: %d", topics.length);
+
+
+  // Map the data to ensure all articles have consistent property names
   const articles = topics.map((article: {
     id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;
   }) => ({
@@ -169,6 +168,7 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
     summary: article.summary ?? "no summary",
     status: article.status ?? "no status"
   }));
+
 
   return {
     props: {

@@ -1,7 +1,7 @@
 import axios from "axios"
 import React, { useState } from 'react';
 import NavigationBar from '../../components/navigationbar/NavigationBar';
-import Head from 'next/head'
+import Head from 'next/head';
 
 export default function Home({submittedArticles}: HomeProps) {
 
@@ -42,6 +42,26 @@ export default function Home({submittedArticles}: HomeProps) {
       console.error("Error posting data:", error);
     }
   }
+
+  
+const handleDelete = async () => {
+  // Prompt the user for confirmation
+  const userConfirmed = window.confirm("Are you sure you want to delete this article?");
+
+  // If the user cancels, abort the deletion
+  if (!userConfirmed) return;
+
+  try {
+    const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles/${submittedArticles && submittedArticles ? submittedArticles._id : ""}`;
+    console.log(url)
+    await axios.delete(url);
+    console.log("Successfully deleted article");
+    window.history.back();
+    // Optionally, you can redirect the user to another page after deletion, or provide some feedback.
+  } catch (error) {
+    console.error("Error deleting article:", error);
+  }
+};
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -98,8 +118,15 @@ export default function Home({submittedArticles}: HomeProps) {
               value="Submit"
               className="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600"
             />
-          </div>
+          </div>    
         </form>
+          <div className="mt-6">
+            <button 
+              onClick={handleDelete}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+              Delete
+            </button>
+          </div>
       </main>      
     </div>
 );
