@@ -72,10 +72,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
       if (response.ok) {
         console.log('Article submitted');
-        // Reset the title state if needed
         setTitle('');
 
-        // Show the success notification
         handleShowNotification();
       } else {
         console.log('Submission failed:', response.statusText);
@@ -102,15 +100,28 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
           />
         )}
 
-        <h1 className="text-3xl font-bold text-center mb-6">Home Page</h1>
+<div className="flex justify-end">
+  <div className="bg-gray-200 rounded p-4 flex items-center mb-4" style={{ width: '100%' }}>
+    <span className="text-gray-500 text-2xl mr-2">&#9889;</span>
+    <h2 className="text-1xl font-semibold mb-0">Welcome, start searching for articles today!</h2>
+  </div>
+</div>
 
-        <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
-        
-        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={e => submitPage()}>Submit Article</button>
+<h1 className="text-3xl font-bold text-center mb-6 italic">Home Page</h1>
+
+
+
+<div className="flex justify-end">
+  <div className="border rounded p-5 flex flex-col items-center">
+    <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
+    
+    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={e => submitPage()}>Submit now</button>
+  </div>
+</div>
 
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">Search for articles by title keywords</h2>
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-end mb-4">
             <SearchBar onSearch={handleSearch} />
           </div>
           <SortableTable headers={headers} data={searchResults} />
@@ -123,7 +134,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       </main>
 
       <footer className="p-4 bg-gray-800 text-white">
-        {/* Content for the footer goes here */}
+        {}
       </footer>
     </div>
   );
@@ -153,8 +164,6 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   console.log("topic count: %d", topics.length);
 
-
-  // Map the data to ensure all articles have consistent property names
   const articles = topics.map((article: {
     id: any; _id: any; 
     dateSubmitted: any; 

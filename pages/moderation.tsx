@@ -6,12 +6,8 @@ import NavigationBar from './components/navigationbar/NavigationBar';
 export default function Moderation({ submittedArticles: initialArticles }: HomeProps) {
   const [submittedArticles, setSubmittedArticles] = useState<Article[]>(initialArticles);
 
-// Handle delete function
 const handleDelete = async (articleId: any) => {
-  // Prompt the user for confirmation
   const userConfirmed = window.confirm("Are you sure you want to delete this article?");
-
-  // If the user cancels, abort the deletion
   if (!userConfirmed) return;
 
   try {
@@ -112,7 +108,7 @@ const handleDelete = async (articleId: any) => {
     fetchArticles();
   }, []);
 
-  return (
+    return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Head>
         <title>MODERATION PAGE</title>
@@ -122,38 +118,38 @@ const handleDelete = async (articleId: any) => {
       <NavigationBar />
 
       <main className="flex-1 p-6">
-        <h2 className="text-3xl font-bold mb-4 text-center flex justify-center items-center h-full italic">
+        <h2 className="text-3xl font-bold mb-4 text-center italic">
           MODERATOR PAGE
         </h2>
 
-        <h3 className="text-xl mb-6">Table of submitted articles</h3>
+        <h3 className="text-xl mb-6">Table of Submitted Articles</h3>
 
         <div className="bg-white shadow-md rounded">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Date Submitted
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Article Title
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Practice
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Claim
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Evidence
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Citation
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Request Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
