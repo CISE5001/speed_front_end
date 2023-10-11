@@ -44,14 +44,14 @@ function SearchBar({ onSearch }: SearchBarProps) {
         onChange={handleInputChange}
         className="flex-grow px-2 py-1 rounded-l focus:outline-none focus:border-blue-400"
       />
-      <button onClick={() => handleSearch()} className="bg-blue-500 text-white px-4 py-1 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <button onClick={() => handleSearch()} className="bg-blue-500 text-white px-4 py-1 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-blue-400">
         Search
       </button>
       {keywords.map((keyword) => (
         <button 
           key={keyword} 
           onClick={() => handleSearch(keyword)} 
-          className="bg-blue-500 text-white px-4 py-1 rounded ml-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+          className="bg-blue-500 text-white px-4 py-1 rounded ml-2 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-green-400">
           {keyword}
         </button>
       ))}

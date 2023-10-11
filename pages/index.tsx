@@ -84,7 +84,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   <div className="border rounded p-5 flex flex-col items-center">
     <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
     
-    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={e => submitPage()}>Submit now</button>
+    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-500 font-bold" onClick={e => submitPage()}>Submit now</button>
   </div>
 </div>
 
