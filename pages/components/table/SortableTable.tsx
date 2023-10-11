@@ -10,30 +10,12 @@ interface SortableTableProps {
 const SortableTable: React.FC<SortableTableProps> = ({ headers, data }) => {
 
   const router = useRouter();
-
-  const handleDelete = async (itemToDelete: any) => {
-    try {
-      // Prompt the user for confirmation
-      const userConfirmed = window.confirm("Are you sure you want to delete this article?");
-
-      // If the user cancels, abort the deletion
-      if (!userConfirmed) return;
-      const id = itemToDelete.id;
-      const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/${id}`;
-      console.log(url);
-      await axios.delete(url);
-      const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles');
-      
-      router.replace(router.asPath);
-
-      if (response.data) {
-        console.log("Successfully changed status");
-      }
-    } catch (error) {
-      console.error("Error deleting article:", error);
-    }
-  };
   
+  const handleViewDetails = (articleId: string) => {
+    // Navigate to the desired page with the article ID. Adjust the URL as needed.
+    router.push(`/viewArticle/${articleId}`);
+  };
+
   return (
     <table className="min-w-full divide-y divide-gray-200 custom-table">
       <thead className="bg-gray-200">
@@ -43,6 +25,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ headers, data }) => {
               {header.label}
             </th>
           ))}
+          <th className="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">View Details</th>
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
@@ -54,7 +37,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ headers, data }) => {
               </td>
             ))}
             <td>
-              <button onClick={() => handleDelete(row)} className="text-red-500 hover:text-red-700">Delete</button>
+              <button onClick={() => handleViewDetails(row._id)} className="text-blue-500 hover:text-blue-700">View Details</button>
             </td>
           </tr>
         ))}

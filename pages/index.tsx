@@ -49,42 +49,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     router.push(`/submit`);
   }
 
-  const handleShowNotification = () => {
-    setShowNotification(true);
-  
-    // Automatically hide the notification after 5 seconds
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 3000);
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    try {
-      const response = await fetch('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ dateSubmitted, articleTitle, status }),
-      });
-
-      if (response.ok) {
-        console.log('Article submitted');
-        // Reset the title state if needed
-        setTitle('');
-
-        // Show the success notification
-        handleShowNotification();
-      } else {
-        console.log('Submission failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('There was an error submitting the form:', error);
-    }
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Head>
@@ -109,16 +73,11 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={e => submitPage()}>Submit Article</button>
 
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold mb-4">Search for articles by title keywords</h2>
+          <h2 className="text-2xl font-semibold mb-4">Search for software practices</h2>
           <div className="flex justify-center mb-4">
             <SearchBar onSearch={handleSearch} />
           </div>
           <SortableTable headers={headers} data={searchResults} />
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">All articles</h2>
-          <SortableTable headers={headers} data={articles} />
         </div>
       </main>
 

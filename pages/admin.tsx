@@ -1,14 +1,116 @@
-import { GetServerSideProps } from 'next';
-import SearchBar from "../pages/components/search/SearchBar";
-import SortableTable from "../pages/components/table/SortableTable";
+import Head from 'next/head'
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import NavigationBar from './components/navigationbar/NavigationBar';
-import NotificationWindow from './components/notification/NotificationWindow';
-import Head from 'next/head';
-import styles from '@/pages/index.module.css';
-import { NextPage } from 'next';
-import React, { useState } from "react";
 
-interface ArticlesInterface {
+export default function Home({approvedArticles}: HomeProps) {
+  
+  const router = useRouter();
+
+  function handleEdit(id:any) {
+    router.push(`/adminEdit/${id}`);
+  }
+
+  const renderArticles = () => {
+    
+    return approvedArticles?.map((item:any, index:any) => (
+        <tr key={index}>
+        <td>{item.dateSubmitted}</td>
+        <td>{item.articleTitle}</td>
+        <td>{item.articlePractice}</td>
+        <td>{item.articleClaim}</td>
+        <td>{item.articleEvidence}</td>
+        <td>{item.articleCitation}</td>
+          <td>{item.status}</td>
+          <td>
+              {item.status == "Approved" ? 
+              <>
+                <button className='detail' onClick={e => handleEdit(item._id)}>View Detail</button>
+              </>:
+                <button className='delete' onClick={e => handleEdit(item._id)}>Edit</button>
+              }
+          </td>
+        </tr>
+    ));
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Head>
+        <title>Admin Page</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <NavigationBar/>
+
+      <main className="flex-1 p-6">
+        <h2 className="text-3xl font-bold mb-4 text-center flex justify-center items-center h-full italic">
+          Admin Page
+        </h2>
+        
+        <h3 className="text-xl mb-6">
+          Table of moderated articles
+        </h3>
+
+        <div className="bg-white shadow-md rounded">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Date Submitted
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Article Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Practice
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Claim
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Evidence
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Citation
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+                { renderArticles() }
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+// Fetch data on server-side
+export async function getServerSideProps() {
+  try {
+    const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
+    });
+
+    if (response.data && response.data.topics) {
+      return {
+        props: {
+          approvedArticles: response.data.topics
+        }
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+
+  return {
+    props: {
+      approvedArticles: []
+    }
+  };
+}
+
+type Article = {
   _id: string;
   dateSubmitted: string;
   articleTitle: string;
@@ -17,110 +119,13 @@ interface ArticlesInterface {
   articleEvidence: string,
   articleCitation: string,
   status: string;
-}
-
-type ArticlesProps = {
-  articles: ArticlesInterface[];
+  selected?: string;
 };
 
-const Articles: NextPage<ArticlesProps> = ({ articles }) => {
-  const headers: { key: keyof ArticlesInterface; label: string }[] = [
-    { key: "articleTitle", label: "Title" },
-    { key: "articlePractice", label: "Practice" },
-    { key: "articleClaim", label: "Claim" },
-    { key: "articleEvidence", label: "Evidence" },
-    { key: "articleCitation", label: "Citation" },
-    { key: "dateSubmitted", label: "Date" },
-  ];
-
-  const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
-  const [showNotification, setShowNotification] = useState(false);
-
-  const handleSearch = (results: ArticlesInterface[]) => {
-    setSearchResults(results);
-  };
-
-  return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      <Head>
-        <title>Speed application</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <NavigationBar/>
-      <main className="flex-1 p-6">
-        {showNotification && (
-          <NotificationWindow
-            message="Article submitted"
-            type="success"
-          />
-        )}
-        <h1 className="text-3xl font-bold text-center mb-6 italic">ADMIN PAGE</h1>
-        <div className="mb-10">
-          <h2 className="text-2xl font-semibold mb-4">Search for articles by title keywords</h2>
-          <div className="flex justify-end mb-4"> {/* Align items to the right */}
-            <SearchBar onSearch={handleSearch} />
-          </div>
-          <SortableTable headers={headers} data={searchResults} />
-        </div>
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">All User Visible Articles</h2>
-          <SortableTable headers={headers} data={articles} />
-        </div>
-      </main>
-
-      <footer className="p-4 bg-gray-800 text-white">
-        { }
-      </footer>
-    </div>
-  );
+type HomeProps = {
+  approvedArticles: Article[];
 };
 
-const getTopics = async () => {
-  try {
-    const res = await fetch('http://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
-      cache: 'no-store',
-    });
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch topics")
-    }
 
-    return res.json();
-  }
-  catch (error) {
-    console.log("Error loading topics: ", error);
-  }
-}
 
-export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) => {
-
-  const { topics } = await getTopics();
-
-  const articles = topics.map((article: {
-    id: any; _id: any; 
-    dateSubmitted: any; 
-    articleTitle: any; 
-    articlePractice: any; 
-    articleClaim: any; 
-    articleEvidence: any; 
-    articleCitation: any; 
-    summary: any; 
-    status: any;
-  }) => ({
-    id: article.id ?? article._id,
-    dateSubmitted: article.dateSubmitted ?? "no date",
-    articleTitle: article.articleTitle ?? "no title",
-    articlePractice: article.articlePractice ?? "no practice",
-    articleClaim: article.articleClaim ?? "no claim",
-    articleEvidence: article.articleEvidence ?? "no evidence",
-    articleCitation: article.articleCitation ?? "no citation",
-  }));
-
-  return {
-    props: {
-      articles,
-    },
-  };
-};
-
-export default Articles;
