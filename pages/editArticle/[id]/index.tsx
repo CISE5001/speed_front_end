@@ -18,12 +18,13 @@ export default function Home({ submittedArticles }: HomeProps) {
     const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
 
     const postData = {
-      dateSubmitted: formattedDate,
+      dateSubmitted: submittedArticles.dateSubmitted,
       articleTitle: title,
       articlePractice: practice,
       articleClaim: claim,
       articleCitation: citation,
       articleEvidence: evidence,
+      status: "Completed",
     }
 
     try {
@@ -31,13 +32,13 @@ export default function Home({ submittedArticles }: HomeProps) {
       console.log(response.data);
 
       try {
-        const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles/completed/${submittedArticles && submittedArticles ? submittedArticles._id : ""}`
+        const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles/`
         console.log(url)
-        const response = await axios.put(url);
+        const response = await axios.post(url, postData);
 
         if (response.data) {
           console.log("Updated Status")
-          window.history.back();
+          handleDelete()
         }
       } catch (error) {
         console.error("Error fetching data:", error);
