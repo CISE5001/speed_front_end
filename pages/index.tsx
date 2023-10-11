@@ -6,7 +6,7 @@ import NotificationWindow from './components/notification/NotificationWindow';
 import Head from 'next/head';
 import { useRouter } from 'next/router'
 import { NextPage } from 'next';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 interface ArticlesInterface {
@@ -35,6 +35,9 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
   const [articleTitle, setTitle] = useState("");
   const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
+  useEffect(() => {
+    setSearchResults(articles);
+  }, [articles]);
   const [showNotification, setShowNotification] = useState(false);
   const dateSubmitted = new Date().toISOString();
   const status = "Awaiting Approval";
@@ -77,7 +80,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
 
 
-<div className="flex justify-end">
+<div className="flex justify-center">
   <div className="border rounded p-5 flex flex-col items-center">
     <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
     
@@ -87,7 +90,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">Search for software practices</h2>
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-end mb-4">
             <SearchBar onSearch={handleSearch} />
           </div>
           <SortableTable headers={headers} data={searchResults} />

@@ -55,11 +55,11 @@ function SearchBar({ onSearch }: SearchBarProps) {
           {keyword}
         </button>
       ))}
-      <button 
+      {/* <button 
         onClick={() => handleSearch("all")} 
         className="bg-blue-500 text-white px-4 py-1 rounded ml-2 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
         Show All
-      </button>
+      </button> */}
     </div>
   );
 }
