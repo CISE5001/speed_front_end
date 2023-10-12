@@ -50,7 +50,7 @@ export default function Home({ submittedArticles }: HomeProps) {
   }
 
   const handleDelete = async () => {
-    const userConfirmed = window.confirm("Are you sure you want to delete this article?");
+    const userConfirmed = window.confirm("Are you sure you want to edit this article?");
     if (!userConfirmed) return;
 
     try {
