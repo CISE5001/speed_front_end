@@ -13,7 +13,10 @@ interface ArticlesInterface {
   id: string;
   dateSubmitted: String,
   articleTitle: String,
-  status: String,
+  articlePractice: String,
+  articleClaim: String,
+  articleEvidence: String,
+  articleCitation: String,
 }
 
 type ArticlesProps = {
@@ -22,17 +25,22 @@ type ArticlesProps = {
 
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
-    { key: "dateSubmitted", label: "Date" },
-    { key: "dateSubmitted", label: "Date" },
     { key: "articleTitle", label: "Title" },
     { key: "articlePractice", label: "Practice" },
     { key: "articleClaim", label: "Claim" },
     { key: "articleEvidence", label: "Evidence" },
     { key: "articleCitation", label: "Citation" },
+    { key: "dateSubmitted", label: "Date" },
   ];
 
-  const [searchResults, setSearchResults] = useState<ArticlesInterface[]>(articles);
+  const [articleTitle, setTitle] = useState("");
+  const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
+  useEffect(() => {
+    setSearchResults(articles);
+  }, [articles]);
   const [showNotification, setShowNotification] = useState(false);
+  const dateSubmitted = new Date().toISOString();
+  const status = "Awaiting Approval";
 
   const handleSearch = (results: ArticlesInterface[]) => {
     setSearchResults(results);
@@ -70,6 +78,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
 <h1 className="text-3xl font-bold text-center mb-6 italic">Home Page</h1>
 
+
+
 <div className="flex justify-center">
   <div className="border rounded p-5 flex flex-col items-center">
     <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
@@ -77,16 +87,13 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-500 font-bold" onClick={e => submitPage()}>Submit now</button>
   </div>
 </div>
+
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">Search for software practices</h2>
           <div className="flex justify-end mb-4">
             <SearchBar onSearch={handleSearch} />
           </div>
           <SortableTable headers={headers} data={searchResults} />
-        </div>
-        <div>
-        <h2>All articles</h2>
-          <SortableTable headers={headers} data={articles} />
         </div>
       </main>
 
@@ -106,6 +113,7 @@ const getTopics = async () => {
     if (!res.ok) {
       throw new Error("Failed to fetch topics")
     }
+
     return res.json();
   }
   catch (error) {
@@ -117,6 +125,7 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   console.log("In GetServerSideProps");
   const { topics } = await getTopics();
+
   console.log("topic count: %d", topics.length);
 
   const articles = topics.map((article: {
@@ -138,6 +147,7 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
     articleEvidence: article.articleEvidence ?? "no evidence",
     articleCitation: article.articleCitation ?? "no citation",
   }));
+
 
   return {
     props: {
