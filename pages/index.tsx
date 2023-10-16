@@ -13,10 +13,7 @@ interface ArticlesInterface {
   id: string;
   dateSubmitted: String,
   articleTitle: String,
-  articlePractice: String,
-  articleClaim: String,
-  articleEvidence: String,
-  articleCitation: String,
+  status: String,
 }
 
 type ArticlesProps = {
@@ -26,18 +23,16 @@ type ArticlesProps = {
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
     { key: "dateSubmitted", label: "Date" },
+    { key: "dateSubmitted", label: "Date" },
     { key: "articleTitle", label: "Title" },
-    { key: "status", label: "Status" },
+    { key: "articlePractice", label: "Practice" },
+    { key: "articleClaim", label: "Claim" },
+    { key: "articleEvidence", label: "Evidence" },
+    { key: "articleCitation", label: "Citation" },
   ];
 
-  const [articleTitle, setTitle] = useState("");
-  const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
-  useEffect(() => {
-    setSearchResults(articles);
-  }, [articles]);
+  const [searchResults, setSearchResults] = useState<ArticlesInterface[]>(articles);
   const [showNotification, setShowNotification] = useState(false);
-  const dateSubmitted = new Date().toISOString();
-  const status = "Awaiting Approval";
 
   const handleSearch = (results: ArticlesInterface[]) => {
     setSearchResults(results);
@@ -82,7 +77,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-500 font-bold" onClick={e => submitPage()}>Submit now</button>
   </div>
 </div>
-
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">Search for software practices</h2>
           <div className="flex justify-end mb-4">
@@ -112,7 +106,6 @@ const getTopics = async () => {
     if (!res.ok) {
       throw new Error("Failed to fetch topics")
     }
-
     return res.json();
   }
   catch (error) {
@@ -124,7 +117,6 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   console.log("In GetServerSideProps");
   const { topics } = await getTopics();
-
   console.log("topic count: %d", topics.length);
 
   const articles = topics.map((article: {
@@ -146,7 +138,6 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
     articleEvidence: article.articleEvidence ?? "no evidence",
     articleCitation: article.articleCitation ?? "no citation",
   }));
-
 
   return {
     props: {

@@ -1,5 +1,4 @@
 import React from "react";
-import axios from 'axios';
 import { useRouter } from 'next/router';
 
 interface SortableTableProps {
@@ -17,11 +16,11 @@ const SortableTable: React.FC<SortableTableProps> = ({ headers, data }) => {
   };
 
   return (
-    <table className="min-w-full divide-y divide-gray-200 custom-table">
+    <table className="table-fixed min-w-full divide-y divide-gray-200 custom-table">
       <thead className="bg-gray-200">
         <tr>
           {headers?.map((header) => (
-            <th key={header.key} className="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
+            <th key={header.key} className="w-30 px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
               {header.label}
             </th>
           ))}
@@ -30,13 +29,13 @@ const SortableTable: React.FC<SortableTableProps> = ({ headers, data }) => {
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
         {data?.map((row, i) => (
-          <tr key={i} className="hover:bg-gray-100">
+          <tr key={i} className="text-sm hover:bg-gray-100">
             {headers?.map((header) => (
-              <td key={header.key} className="px-6 py-4 whitespace-nowrap">
+              <td key={header.key} className="w-30 px-6 py-4">
                 {row[header.key]}
               </td>
             ))}
-            <td>
+            <td className="text-sm">
               <button onClick={() => handleViewDetails(row._id)} className="text-blue-500 hover:text-blue-700">View Details</button>
             </td>
           </tr>

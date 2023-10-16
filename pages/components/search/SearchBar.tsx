@@ -47,6 +47,11 @@ function SearchBar({ onSearch }: SearchBarProps) {
       <button onClick={() => handleSearch()} className="bg-blue-500 text-white px-4 py-1 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-blue-400">
         Search
       </button>
+      {/*<button 
+        onClick={() => handleSearch("")} 
+        className="bg-blue-500 text-white px-4 py-1 rounded ml-2 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        Show All
+  </button>*/}
       {keywords.map((keyword) => (
         <button 
           key={keyword} 
@@ -55,11 +60,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
           {keyword}
         </button>
       ))}
-      {/* <button 
-        onClick={() => handleSearch("all")} 
-        className="bg-blue-500 text-white px-4 py-1 rounded ml-2 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-        Show All
-      </button> */}
+      
     </div>
   );
 }
