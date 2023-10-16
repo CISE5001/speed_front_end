@@ -25,12 +25,9 @@ type ArticlesProps = {
 
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
-    { key: "articleTitle", label: "Title" },
-    { key: "articlePractice", label: "Practice" },
-    { key: "articleClaim", label: "Claim" },
-    { key: "articleEvidence", label: "Evidence" },
-    { key: "articleCitation", label: "Citation" },
     { key: "dateSubmitted", label: "Date" },
+    { key: "articleTitle", label: "Title" },
+    { key: "status", label: "Status" },
   ];
 
   const [articleTitle, setTitle] = useState("");
@@ -78,8 +75,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
 <h1 className="text-3xl font-bold text-center mb-6 italic">Home Page</h1>
 
-
-
 <div className="flex justify-center">
   <div className="border rounded p-5 flex flex-col items-center">
     <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
@@ -94,6 +89,10 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
             <SearchBar onSearch={handleSearch} />
           </div>
           <SortableTable headers={headers} data={searchResults} />
+        </div>
+        <div>
+        <h2>All articles</h2>
+          <SortableTable headers={headers} data={articles} />
         </div>
       </main>
 
