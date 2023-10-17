@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import NavigationBar from '../pages/components/navigationbar/NavigationBar';
+import NotificationWindow from '../pages/components/notification/NotificationWindow';
 import Head from 'next/head';
 
 export default function Home() {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
+  const [statusUpdated, setStatusUpdated] = useState(false);
   const status = "Awaiting Approval";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +29,10 @@ export default function Home() {
 
       if (response.data) {
         console.log("Updated Status");
-        window.history.back();
+        setStatusUpdated(true);
+        setTimeout(() => {
+          window.history.back();
+        }, 2000);
       }
     } catch (error) {
       console.error("Error posting data:", error);
@@ -45,6 +50,11 @@ export default function Home() {
 
       <main className="flex-1 p-6">
         <div className="flex flex-col items-center">
+        {statusUpdated && (
+          <NotificationWindow
+          message="Article successfully submitted! Navigating back to the homepage..."
+          type="success"
+          />)}
           <h1 className="text-4xl font-bold mb-10">Submit an Article for Moderation</h1>
 
           <form id="userSubmit" onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">

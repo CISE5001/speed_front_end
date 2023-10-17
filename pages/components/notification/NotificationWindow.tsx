@@ -10,7 +10,7 @@ const NotificationWindow: React.FC<NotificationWindowProps> = ({ message, type }
   const [isVisible, setIsVisible] = useState(true);
 
   const notificationBoxStyles: React.CSSProperties = {
-    backgroundColor: type === 'success' ? '#fc053f' : type === 'error' ? 'red' : 'blue', 
+    backgroundColor: type === 'success' ? '#4e9117' : type === 'error' ? 'red' : 'blue', 
     color: 'white',
     padding: '10px',
     textAlign: 'center',
