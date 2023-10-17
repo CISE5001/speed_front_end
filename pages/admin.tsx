@@ -25,9 +25,9 @@ export default function Home({approvedArticles}: HomeProps) {
           <td>
               {item.status == "Approved" ? 
               <>
-                <button className='detail' onClick={e => handleEdit(item._id)}>View Detail</button>
+                <button className="text-blue-500 hover:text-blue-700" onClick={e => handleEdit(item._id)}>View Detail</button>
               </>:
-                <button className='delete' onClick={e => handleEdit(item._id)}>Edit</button>
+                <button className="text-blue-500 hover:text-blue-700" onClick={e => handleEdit(item._id)}>Edit</button>
               }
           </td>
         </tr>
@@ -73,6 +73,12 @@ export default function Home({approvedArticles}: HomeProps) {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Citation
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Edit
                 </th>
               </tr>
             </thead>

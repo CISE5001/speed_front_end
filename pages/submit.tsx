@@ -5,10 +5,7 @@ import Head from 'next/head';
 
 export default function Home() {
   const [title, setTitle] = useState("");
-  const [practice, setPractice] = useState("");
-  const [claim, setClaim] = useState("");
-  const [evidence, setEvidence] = useState("");
-  const [citation, setCitation] = useState("");
+  const [link, setLink] = useState("");
   const status = "Awaiting Approval";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,10 +17,7 @@ export default function Home() {
     const postData = {
       dateSubmitted: formattedDate,
       articleTitle: title,
-      articlePractice: practice,
-      articleClaim: claim,
-      articleCitation: citation,
-      articleEvidence: evidence,
+      articleCitation: link, 
       status: status,
     }
 
@@ -68,53 +62,14 @@ export default function Home() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="articlePractice" className="block text-lg font-semibold">Practice</label>
-              <input
-                type="text"
-                id="articlePractice"
-                name="articlePractice"
-                placeholder="Enter article practice here"
-                value={practice}
-                onChange={e => setPractice(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="articleClaim" className="block text-lg font-semibold">Claim</label>
-              <input
-                type="text"
-                id="articleClaim"
-                name="articleClaim"
-                placeholder="Enter article claim here"
-                value={claim}
-                onChange={e => setClaim(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="articleEvidence" className="block text-lg font-semibold">Evidence</label>
-              <input
-                type="text"
-                id="articleEvidence"
-                name="articleEvidence"
-                placeholder="Enter article evidence here"
-                value={evidence}
-                onChange={e => setEvidence(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="articleCitation" className="block text-lg font-semibold">Citation</label>
+              <label htmlFor="articleCitation" className="block text-lg font-semibold">Article Link</label>
               <input
                 type="text"
                 id="articleCitation"
                 name="articleCitation"
-                placeholder="Enter article citation here"
-                value={citation}
-                onChange={e => setCitation(e.target.value)}
+                placeholder="Enter article practice here"
+                value={link}
+                onChange={e => setLink(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded"
               />
             </div>

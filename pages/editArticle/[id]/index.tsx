@@ -5,6 +5,7 @@ import Head from 'next/head';
 
 export default function Home({ submittedArticles }: HomeProps) {
 
+  const [date, setDate] = useState(submittedArticles && submittedArticles ? submittedArticles.dateSubmitted : "");
   const [title, setTitle] = useState(submittedArticles && submittedArticles ? submittedArticles.articleTitle : "");
   const [practice, setPractice] = useState(submittedArticles && submittedArticles ? submittedArticles.articlePractice : "");
   const [claim, setClaim] = useState(submittedArticles && submittedArticles ? submittedArticles.articleClaim : "");
@@ -14,11 +15,13 @@ export default function Home({ submittedArticles }: HomeProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    {/*
     const currentDate = new Date();
     const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+  */}
 
     const postData = {
-      dateSubmitted: submittedArticles.dateSubmitted,
+      dateSubmitted: date,
       articleTitle: title,
       articlePractice: practice,
       articleClaim: claim,
@@ -50,7 +53,7 @@ export default function Home({ submittedArticles }: HomeProps) {
   }
 
   const handleDelete = async () => {
-    const userConfirmed = window.confirm("Are you sure you want to edit this article?");
+    const userConfirmed = window.confirm("Are you sure you want to delete this article?");
     if (!userConfirmed) return;
 
     try {
@@ -77,6 +80,17 @@ export default function Home({ submittedArticles }: HomeProps) {
         <h1 className="text-4xl font-bold mb-10">Edit Article</h1>
 
         <form id="userSubmit" onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
+        <div>
+            <p className="mb-2 font-semibold">Article Date</p>
+            <input
+              type="text"
+              name="articleDate"
+              placeholder="Enter article date here"
+              value={date}
+              onChange={e => setDate(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded block"
+            />
+          </div>
           <div>
             <p className="mb-2 font-semibold">Title</p>
             <input

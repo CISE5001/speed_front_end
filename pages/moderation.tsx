@@ -46,9 +46,6 @@ const handleDelete = async (articleId: any) => {
       <tr key={index}>
         <td>{item.dateSubmitted}</td>
         <td>{item.articleTitle}</td>
-        <td>{item.articlePractice}</td>
-        <td>{item.articleClaim}</td>
-        <td>{item.articleEvidence}</td>
         <td>{item.articleCitation}</td>
         <td>
           {item.status === "Awaiting Approval" ? (
@@ -57,7 +54,7 @@ const handleDelete = async (articleId: any) => {
                 className={`selectable-button ${item.selected === 'approve' ? 'selected' : ''}`}
                 onClick={() => {
                   handleStatusChange(item._id, 'approveArticle');
-                  submitApproved(item.dateSubmitted, item.articleTitle, item.articlePractice, item.articleClaim, item.articleEvidence, item.articleCitation, 'approve');
+                  submitApproved(item.dateSubmitted, item.articleTitle, item.articleCitation, 'approve');
                 }}
               >
                 Approve
@@ -66,7 +63,7 @@ const handleDelete = async (articleId: any) => {
                 className={`selectable-button ${item.selected === 'reject' ? 'selected' : ''}`}
                 onClick={() => {
                   handleStatusChange(item._id, 'rejectArticle');
-                  submitApproved(item.dateSubmitted, item.articleTitle, item.articlePractice, item.articleClaim, item.articleEvidence, item.articleCitation, 'reject');
+                  submitApproved(item.dateSubmitted, item.articleTitle, item.articleCitation, 'reject');
                 }}
               >
                 Reject
@@ -135,16 +132,7 @@ const handleDelete = async (articleId: any) => {
                   Article Title
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Practice
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Claim
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Evidence
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Citation
+                  Link
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Request Status
@@ -162,7 +150,7 @@ const handleDelete = async (articleId: any) => {
   );
 }
 
-export async function submitApproved(dateSubmitted: any, title: string, practice: any, claim: any, evidence: any, citation: any, action: string) {
+export async function submitApproved(dateSubmitted: any, title: string, link: any, action: string) {
   try {
     console.log("Entered submitApproved");
     const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles`;
@@ -170,10 +158,7 @@ export async function submitApproved(dateSubmitted: any, title: string, practice
     const postData = {
       dateSubmitted,
       articleTitle: title,
-      articlePractice: practice,
-      articleClaim: claim,
-      articleEvidence: evidence,
-      articleCitation: citation,
+      articleCitation: link,
       status: action === 'approve' ? 'Approved' : 'Rejected',
     };
     console.log(postData);
@@ -215,10 +200,7 @@ type Article = {
   _id: string;
   dateSubmitted: string;
   articleTitle: string;
-  articlePractice: string,
-  articleClaim: string,
-  articleEvidence: string,
-  articleCitation: string,
+  articleCitation: string;
   status: string;
   selected?: string;
 };

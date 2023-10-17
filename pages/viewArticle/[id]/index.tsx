@@ -32,7 +32,7 @@ export default function ArticleDetails({ submittedArticles }: HomeProps) {
                     <p className="mb-4 text-xl font-medium text-gray-700">Citation: 
                         <span className="ml-2 font-normal text-gray-600">{submittedArticles.articleCitation}</span>
                     </p>
-                    <p className="mb-4 text-xl font-medium text-gray-700">Date Submitted: 
+                    <p className="mb-4 text-xl font-medium text-gray-700">Date published: 
                         <span className="ml-2 font-normal text-gray-600">{submittedArticles.dateSubmitted}</span>
                     </p>
                 </div>
