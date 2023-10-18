@@ -5,7 +5,6 @@ interface NotificationWindowProps {
   type: 'success' | 'error' | 'info';
 }
 
-// Notification popup window design
 const NotificationWindow: React.FC<NotificationWindowProps> = ({ message, type }) => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -22,12 +21,11 @@ const NotificationWindow: React.FC<NotificationWindowProps> = ({ message, type }
     borderRadius: '5px',
   };
   
-
   useEffect(() => {
     // Automatically hide the notification after 5 seconds
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 10000);
+    }, 5000);
 
     return () => {
       clearTimeout(timer);
