@@ -7,7 +7,7 @@ export default function Moderation({ submittedArticles: initialArticles }: HomeP
   const [submittedArticles, setSubmittedArticles] = useState<Article[]>(initialArticles);
 
 const handleDelete = async (articleId: any) => {
-  const userConfirmed = window.confirm("Are you sure you want to delete this article?");
+  const userConfirmed = window.confirm("Are you sure you want to change this article?");
   if (!userConfirmed) return;
 
   try {
