@@ -53,14 +53,14 @@ export default function Home({ submittedArticles }: HomeProps) {
   }
 
   const handleDelete = async () => {
-    const userConfirmed = window.confirm("Are you sure you want to delete this article?");
+    const userConfirmed = window.confirm("Are you sure you want to change this article?");
     if (!userConfirmed) return;
 
     try {
       const url = `https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles/${submittedArticles && submittedArticles ? submittedArticles._id : ""}`;
       console.log(url)
       await axios.delete(url);
-      console.log("Successfully deleted article");
+      console.log("Successfully changed article");
       window.history.back();
     } catch (error) {
       console.error("Error deleting article:", error);
