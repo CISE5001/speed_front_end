@@ -6,7 +6,7 @@ interface SearchBarProps {
 
 function SearchBar({ onSearch }: SearchBarProps) {
   const [query, setQuery] = useState<string>('');
-  const keywords = ["Agile", "Scrum", "DevOps", "CI/CD"];
+  const keywords = ["Agile", "Scrum", "DevOps", "CI/CD", "TDD"];
 
   const handleSearch = async (searchQuery?: string) => {
     const searchTerm = searchQuery || query;
@@ -47,11 +47,6 @@ function SearchBar({ onSearch }: SearchBarProps) {
       <button onClick={() => handleSearch()} className="bg-blue-500 text-white px-4 py-1 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-blue-400">
         Search
       </button>
-      {/*<button 
-        onClick={() => handleSearch("")} 
-        className="bg-blue-500 text-white px-4 py-1 rounded ml-2 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-        Show All
-  </button>*/}
       {keywords.map((keyword) => (
         <button 
           key={keyword} 

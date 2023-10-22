@@ -72,12 +72,12 @@ export default function Home() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="articleCitation" className="block text-lg font-semibold">Article Link</label>
+              <label htmlFor="articleCitation" className="block text-lg font-semibold">Article DOI or Citation</label>
               <input
                 type="text"
                 id="articleCitation"
                 name="articleCitation"
-                placeholder="Enter article practice here"
+                placeholder="Enter article DOI/Citation here"
                 value={link}
                 onChange={e => setLink(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded"
