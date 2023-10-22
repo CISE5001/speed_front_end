@@ -72,7 +72,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 <div className="flex justify-end">
   <div className="bg-gray-200 rounded p-4 flex items-center mb-4" style={{ width: '100%' }}>
     <span className="text-gray-500 text-2xl mr-2">&#9889;</span>
-    <h2 className="text-1xl font-semibold mb-0">Welcome, start searching for articles today!</h2>
+    <h2 className="text-1xl font-semibold mb-0">Uniting learners and researchers interested in software engineering practices through building a living knowledge-base of academic claims.</h2>
   </div>
 </div>
 
