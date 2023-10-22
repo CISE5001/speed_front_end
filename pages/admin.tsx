@@ -8,7 +8,7 @@ export default function Home({approvedArticles}: HomeProps) {
   const router = useRouter();
 
   function handleEdit(id:any) {
-    router.push(`/editArticle/${id}`);
+    router.push(`/adminEdit/${id}`);
   }
 
   const renderArticles = () => {
@@ -25,9 +25,9 @@ export default function Home({approvedArticles}: HomeProps) {
           <td>
               {item.status == "Approved" ? 
               <>
-                <button className='text-blue-500 hover:text-blue-700' onClick={e => handleEdit(item._id)}>View Detail</button>
+                <button className="text-blue-500 hover:text-blue-700" onClick={e => handleEdit(item._id)}>View Detail</button>
               </>:
-                <button className='text-blue-500 hover:text-blue-700' onClick={e => handleEdit(item._id)}>Edit</button>
+                <button className="text-blue-500 hover:text-blue-700" onClick={e => handleEdit(item._id)}>Edit</button>
               }
           </td>
         </tr>
@@ -37,7 +37,7 @@ export default function Home({approvedArticles}: HomeProps) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Head>
-        <title>ANALYST PAGE</title>
+        <title>Admin Page</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -45,7 +45,7 @@ export default function Home({approvedArticles}: HomeProps) {
 
       <main className="flex-1 p-6">
         <h2 className="text-3xl font-bold mb-4 text-center flex justify-center items-center h-full italic">
-          ANALYST PAGE
+          Admin Page
         </h2>
         
         <h3 className="text-xl mb-6">
@@ -57,7 +57,7 @@ export default function Home({approvedArticles}: HomeProps) {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
+                  Date Submitted
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Article Title
@@ -75,10 +75,10 @@ export default function Home({approvedArticles}: HomeProps) {
                   Citation
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Request Status
+                  Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  Edit
                 </th>
               </tr>
             </thead>
@@ -95,13 +95,13 @@ export default function Home({approvedArticles}: HomeProps) {
 // Fetch data on server-side
 export async function getServerSideProps() {
   try {
-    const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/approvedArticles', {
+    const response = await axios.get('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles', {
     });
 
-    if (response.data && response.data.approvedArticles) {
+    if (response.data && response.data.topics) {
       return {
         props: {
-          approvedArticles: response.data.approvedArticles
+          approvedArticles: response.data.topics
         }
       };
     }

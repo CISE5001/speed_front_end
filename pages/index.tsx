@@ -1,20 +1,22 @@
 import { GetServerSideProps } from 'next';
 import SearchBar from "../pages/components/search/SearchBar";
 import SortableTable from "../pages/components/table/SortableTable";
+import NavigationBar from './components/navigationbar/NavigationBar';
+import NotificationWindow from './components/notification/NotificationWindow';
 import Head from 'next/head';
-import styles from '@/pages/index.module.css';
-import Link from 'next/link';
+import { useRouter } from 'next/router'
 import { NextPage } from 'next';
-import React, { useState } from "react";
-import Notification from './Notification'; // Adjust the path as needed
+import React, { useEffect, useState } from "react";
+
 
 interface ArticlesInterface {
   id: string;
   dateSubmitted: String,
   articleTitle: String,
+  articlePractice: String,
+  articleClaim: String,
+  articleEvidence: String,
   articleCitation: String,
-  summary: String;
-  status: String;
 }
 
 type ArticlesProps = {
@@ -24,14 +26,19 @@ type ArticlesProps = {
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
     { key: "articleTitle", label: "Title" },
-    { key: "summary", label: "Summary" },
+    { key: "articlePractice", label: "Practice" },
+    { key: "articleClaim", label: "Claim" },
+    { key: "articleEvidence", label: "Evidence" },
     { key: "articleCitation", label: "Citation" },
     { key: "dateSubmitted", label: "Date" },
   ];
 
   const [articleTitle, setTitle] = useState("");
   const [searchResults, setSearchResults] = useState<ArticlesInterface[]>([]);
-  const [notification, setNotification] = useState({ message: '', isOpen: false });
+  useEffect(() => {
+    setSearchResults(articles);
+  }, [articles]);
+  const [showNotification, setShowNotification] = useState(false);
   const dateSubmitted = new Date().toISOString();
   const status = "Awaiting Approval";
 
@@ -39,94 +46,59 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     setSearchResults(results);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const router = useRouter();
 
-    try {
-      const response = await fetch('https://speed-back-end-git-feature-working-cise5001.vercel.app/api/articles/submittedarticles', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ dateSubmitted, articleTitle, status }),
-      });
-
-      if (response.ok) {
-        console.log('Article submitted');
-        // Reset the title state if needed
-        setTitle('');
-
-        // Show the success notification
-        setNotification({ message: 'Article submitted', isOpen: true });
-      } else {
-        console.log('Submission failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('There was an error submitting the form:', error);
-    }
-  };
-
+  function submitPage() {
+    router.push(`/submit`);
+  }
 
   return (
-    <div className={styles.container}>
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <Head>
         <title>Speed application</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="horizontal-color-bar">
 
-        {notification.isOpen && (
-          <Notification
-            message={notification.message}
-            onClose={() => setNotification({ message: '', isOpen: false })}
+      <NavigationBar/>
+
+      <main className="flex-1 p-6">
+        {showNotification && (
+          <NotificationWindow
+            message="Article submitted"
+            type="success"
           />
         )}
 
+<div className="flex justify-end">
+  <div className="bg-gray-200 rounded p-4 flex items-center mb-4" style={{ width: '100%' }}>
+    <span className="text-gray-500 text-2xl mr-2">&#9889;</span>
+    <h2 className="text-1xl font-semibold mb-0">Uniting learners and researchers interested in software engineering practices through building a living knowledge-base of academic claims.</h2>
+  </div>
+</div>
 
-        <Link href="/">
-          <button className={styles.button}>Home</button>
-        </Link>
-        <Link href="/moderation">
-          <button className={styles.button}>Moderator</button>
-        </Link>
-        <Link href="/analyst">
-          <button className={styles.button}>Analyst</button>
-        </Link>
-        <Link href="/admin">
-          <button className={styles.button}>Admin</button>
-        </Link>
-      </div>
+<h1 className="text-3xl font-bold text-center mb-6 italic">Home Page</h1>
 
-      <main>
-        <h1><center>Home Page</center></h1>
-        <h2>Submit an Article for Moderation</h2>
-        <form id="userSubmit" onSubmit={handleSubmit}>
-          <center>
-            <input
-              type="text"
-              name="articleTitle"
-              placeholder="Enter article title here"
-              value={articleTitle}
-              onChange={event => setTitle(event.target.value)}
-              className="rounded-input"
-            />
-            <button type="submit" className={styles.button}>Submit</button>
-          </center>
-        </form>
 
-        <div>
-          <h2>Search for articles by title keywords</h2>
-          <center><SearchBar onSearch={handleSearch} /></center>
+
+<div className="flex justify-center">
+  <div className="border rounded p-5 flex flex-col items-center">
+    <h2 className="text-2xl font-semibold mb-4">Submit an Article for Moderation</h2>
+    
+    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-500 font-bold" onClick={e => submitPage()}>Submit now</button>
+  </div>
+</div>
+
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4">Search for software practices</h2>
+          <div className="flex justify-end mb-4">
+            <SearchBar onSearch={handleSearch} />
+          </div>
           <SortableTable headers={headers} data={searchResults} />
-        </div>
-        <div>
-          <h2>All articles</h2>
-          <SortableTable headers={headers} data={articles} />
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        { }
+      <footer className="p-4 bg-gray-800 text-white">
+        {}
       </footer>
     </div>
   );
@@ -156,17 +128,24 @@ export const getServerSideProps: GetServerSideProps<ArticlesProps> = async (_) =
 
   console.log("topic count: %d", topics.length);
 
-
-  // Map the data to ensure all articles have consistent property names
   const articles = topics.map((article: {
-    id: any; _id: any; dateSubmitted: any; articleTitle: any; articleCitation: any; summary: any; status: any;
+    id: any; _id: any; 
+    dateSubmitted: any; 
+    articleTitle: any; 
+    articlePractice: any; 
+    articleClaim: any; 
+    articleEvidence: any; 
+    articleCitation: any; 
+    summary: any; 
+    status: any;
   }) => ({
     id: article.id ?? article._id,
     dateSubmitted: article.dateSubmitted ?? "no date",
     articleTitle: article.articleTitle ?? "no title",
+    articlePractice: article.articlePractice ?? "no practice",
+    articleClaim: article.articleClaim ?? "no claim",
+    articleEvidence: article.articleEvidence ?? "no evidence",
     articleCitation: article.articleCitation ?? "no citation",
-    summary: article.summary ?? "no summary",
-    status: article.status ?? "no status"
   }));
 
 
